@@ -6,7 +6,7 @@ public class Epic extends Task {
     private TaskManager taskManager = new TaskManager();
 
     public Epic(String name, String description, int id) {
-        super(id,name, description, Status.NEW);
+        super(id, name, description, Status.NEW);
     }
 
     public ArrayList<Integer> getAllTaskId() {

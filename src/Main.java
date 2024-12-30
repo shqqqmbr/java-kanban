@@ -6,13 +6,21 @@ public class Main {
         taskManager.addTask(task1);
         System.out.println(taskManager.getTasks());
         task1.setStatus(Status.DONE);
+        taskManager.updateTask(task1);
+        task1.setStatus(Status.IN_PROGRESS);
+        taskManager.updateTask(task1);
         System.out.println(taskManager.getTasks());
 
-        Task task2 = new Task(2, "Задача_2", "Описание_2", Status.NEW);
+        Epic epic1 = new Epic("Эпик_1", "Описание_Большого_Эпика", 2);
 
+        Subtask subtask1 = new Subtask(3, "Подзадача 1", "Описание подзадачи 1", Status.NEW, epic1.getId());
+        taskManager.addSubtask(subtask1);
 
-        Epic epic1 = new Epic("Эпик_1", "Описание_Большого_Эпика", 3);
+        Subtask subtask2 = new Subtask(4, "Подзадача 2", "Описание подзадачи 2", Status.NEW, epic1.getId());
+        taskManager.addSubtask(subtask2);
 
-        Epic epic2 = new Epic("Эпик_2", "Описание_Маленького_Эпика", 4);
+        Subtask subtask3 = new Subtask(5, "Подзадача 3", "Описание подзадачи 3", Status.NEW, epic1.getId());
+        taskManager.addSubtask(subtask3);
+
     }
 }
