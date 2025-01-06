@@ -1,5 +1,5 @@
 public class Main {
-
+    //внизу вопрос
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
@@ -37,3 +37,6 @@ public class Main {
 
     }
 }
+// когда я вывожу подзадачи из хэш-таблицы класса TaskManager, у меня 1 задача пропадает, но когда я вывожу список
+//подзадач из класса epic, то обе подзадачи на месте. метод добавления подзадач у меня универсален для epic и taskManager.
+//проблемы не вижу совсем, почему подзадача1 в одном месте выводится, а в другом месте нет:(
