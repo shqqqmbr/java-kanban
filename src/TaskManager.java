@@ -48,7 +48,7 @@ public class TaskManager {
 
     public void updateEpic(Epic epic, Epic newEpic) {
         epics.put(epic.getId(), newEpic);
-        epic.getAllSubtasks().clear();
+        newEpic.updateEpicStatus();//исправлено
     }
 
     public void updateSubtask(Subtask subtask, Subtask newSubtask) {
@@ -67,6 +67,7 @@ public class TaskManager {
 
     public void deleteAllEpics() {
         epics.clear();
+        subtasks.clear();//исправлено
     }
 
     public void deleteAllSubtasks(int subtaskId) {
