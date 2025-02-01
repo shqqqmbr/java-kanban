@@ -1,4 +1,9 @@
+package main.tasks;
+
 import java.util.ArrayList;
+
+import main.constants.Status;
+
 
 public class Epic extends Task {
 
@@ -12,7 +17,7 @@ public class Epic extends Task {
         allSubtasks.add(subtask);
     }
 
-    public ArrayList<Subtask> getAllSubtasks() {
+public ArrayList<Subtask> getAllSubtasks() {
         return allSubtasks;
     }
 

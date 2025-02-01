@@ -1,4 +1,6 @@
+package main.tasks;
 import java.util.Objects;
+import main.constants.Status;
 
 public class Task {
     private String name;
@@ -61,8 +63,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.getClass().getName() +
-                "{name='" + name + '\'' +
+        return this.getClass().getSimpleName() +
+                "\n" + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", id=" + id +

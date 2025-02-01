@@ -1,3 +1,6 @@
+package main.tasks;
+import main.constants.Status;
+
 public class Subtask extends Task {
     private final int epicId;
 
