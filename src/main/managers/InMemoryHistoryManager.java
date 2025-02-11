@@ -3,12 +3,35 @@ package main.managers;
 
 import main.tasks.Task;
 
+
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    ArrayList<Task> historyList = new ArrayList<>();
-    private final int max_size = 10;
+    Map<Integer, Node> historyMap = new HashMap();
+    private Node head;
+    private Node tail;
 
+    @Override
+    public ArrayList<Task> getTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        Node node = head;
+        while (node!=null){
+            tasks.add(node.task);
+            node = node.next;
+        }
+        return tasks;
+    }
+
+    @Override
+    public void linkLast(Task task) {
+        Node node = new Node(task, null,null);
+
+    }
+
+    @Override
+    public void removeNode(Node node){
+
+    }
 
     @Override
     public void add(Task task) {
@@ -22,9 +45,12 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return historyList;
     }
-    DADADAD
 
+    @Override
+    public void remove(int id){
+        historyList.remove(id);
+    }
 }
