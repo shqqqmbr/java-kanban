@@ -21,9 +21,9 @@ public class InMemoryHistoryManagerTest {
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         Task task2 = new Task("Задача 2", "Описание задачи 2", Status.DONE);
         Task task3 = new Task("Задача 3", "Описание задачи 3", Status.IN_PROGRESS);
-        manager.add(task1);
-        manager.add(task2);
-        manager.add(task3);
+        manager.linkLast(task1);
+        manager.linkLast(task2);
+        manager.linkLast(task3);
         Assertions.assertNotNull(manager.getHistory());
     }
 }

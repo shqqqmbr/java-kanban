@@ -17,7 +17,7 @@ public class ManagersTest {
         Assertions.assertNotNull(manager.getAllTasks());
 
         HistoryManager manager1 = Managers.getDefaultHistoryManager();
-        manager1.add(task1);
+        manager1.linkLast(task1);
         Assertions.assertNotNull(manager1.getHistory());
     }
 }

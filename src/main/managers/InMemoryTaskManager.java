@@ -2,6 +2,7 @@ package main.managers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import main.tasks.*;
@@ -120,19 +121,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int taskId) {
-        manager.add(tasks.get(taskId));
+        manager.linkLast(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
     @Override
     public Epic getEpic(int epicId) {
-        manager.add(epics.get(epicId));
+        manager.linkLast(epics.get(epicId));
         return epics.get(epicId);
     }
 
     @Override
     public Subtask getSubtask(int subtaskId) {
-        manager.add(subtasks.get(subtaskId));
+        manager.linkLast(subtasks.get(subtaskId));
         return subtasks.get(subtaskId);
     }
 
