@@ -1,4 +1,4 @@
-package tests.tasks;
+package tasks;
 
 import main.tasks.Epic;
 import org.junit.jupiter.api.Assertions;
