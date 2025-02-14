@@ -78,10 +78,10 @@ public class InMemoryTaskManagerTest {
         subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
         manager.addSubtask(subtask);
         int subtaskId = subtask.getId();
-        manager.deleteSubtask(subtask.getId());
-        subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
-        int subtask2Id = subtask.getId();
-        Assertions.assertEquals();
+        manager.deleteSubtask(subtaskId);
+        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        manager.addSubtask(subtask1);
+        int subtask2Id = subtask1.getId();
         Assertions.assertEquals(subtaskId, subtask2Id);
     }
 }

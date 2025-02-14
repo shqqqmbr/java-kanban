@@ -12,5 +12,9 @@ public interface HistoryManager {
 
     public List<Task> getHistory();
 
+    public void remove(int id);
+
+    public Map<Integer, Node> getHistoryMap();
+
     public ArrayList<Task> getTasks();
 }

@@ -35,20 +35,17 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void shouldLastVersionTaskSaveInHistoryManager() {
-        manager.linkLast(task1);
-        manager.linkLast(task2);
-        manager.linkLast(task3);
+        manager.addTask(task1);
+        manager.addTask(task2);
+        manager.addTask(task3);
         Assertions.assertNotNull(manager.getHistory());
     }
 
     @Test
     public void linkLastTest(){
-        taskManager.addTask(task1);
-        taskManager.addTask(task2);
-        taskManager.addTask(task3);
-        manager.linkLast(task1);
-        manager.linkLast(task2);
-        manager.linkLast(task3);
+        manager.addTask(task1);
+        manager.addTask(task2);
+        manager.addTask(task3);
         Map<Integer, Node> history = manager.getHistoryMap();
         Assertions.assertNull(history.get(task3.getId()).next);
         Assertions.assertNotNull(history.get(task3.getId()).prev);
@@ -56,18 +53,16 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void removeNodeTest() {
-        taskManager.addTask(task1);
-        taskManager.addTask(task2);
-        taskManager.addTask(task3);
-        manager.linkLast(task1);
-        manager.linkLast(task2);
-        manager.linkLast(task3);
+        manager.addTask(task1);
+        manager.addTask(task2);
+        manager.addTask(task3);
         Map<Integer, Node> history = manager.getHistoryMap();
         Assertions.assertTrue(history.containsKey(task1.getId()));
         Assertions.assertTrue(history.containsKey(task2.getId()));
         Assertions.assertTrue(history.containsKey(task3.getId()));
-        manager.removeNode(history.get(task2.getId()));
+        manager.remove(task2.getId());
         Assertions.assertFalse(history.containsKey(task2.getId()));
+        Assertions.assertEquals(history.get(task1.getId()).next, history.get(task3.getId()));
         Assertions.assertEquals(history.get(task1.getId()).next, history.get(task3.getId()));
         Assertions.assertEquals(history.get(task3.getId()).prev, history.get(task1.getId()));
     }
