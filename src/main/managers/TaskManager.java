@@ -18,7 +18,7 @@ public interface TaskManager {
 
     public void deleteEpic(int epicId);
 
-    public void deleteSubtask(int SubtaskId);
+    public void deleteSubtask(int subtaskId);
 
     public void updateTask(Task task, Task newTask);
 
