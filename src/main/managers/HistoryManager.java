@@ -13,10 +13,4 @@ public interface HistoryManager {
     public List<Task> getHistory();
 
     public ArrayList<Task> getTasks();
-
-    public void linkLast(Task task);
-
-    public void removeNode(Node node);
-
-    public Map<Integer, Node> getHistoryMap();
 }

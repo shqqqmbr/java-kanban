@@ -30,8 +30,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasks;
     }
 
-    @Override
-    public void linkLast(Task task) {
+    private void linkLast(Task task) {
         final Node oldTail = tail;
         final Node newNode = new Node(tail, task, null);
         tail = newNode;
