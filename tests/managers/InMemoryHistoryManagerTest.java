@@ -42,7 +42,7 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void linkLastTest(){
+    public void linkLastTest() {
         manager.addTask(task1);
         manager.addTask(task2);
         manager.addTask(task3);
@@ -68,7 +68,7 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void addTaskTest(){
+    public void addTaskTest() {
         manager.addTask(task1);
         manager.addTask(task2);
         manager.addTask(task3);

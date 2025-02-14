@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public class ManagersTest {
     @Test
-    public void shouldManagersWorkCorrect(){
+    public void shouldManagersWorkCorrect() {
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         TaskManager manager = Managers.getDefaultTaskManager();
         manager.addTask(task1);
