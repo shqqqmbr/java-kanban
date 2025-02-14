@@ -1,4 +1,4 @@
-package tests.tasks;
+package tasks;
 
 import main.constants.Status;
 import main.tasks.Task;
