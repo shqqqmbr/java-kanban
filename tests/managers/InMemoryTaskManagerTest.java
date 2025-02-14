@@ -15,6 +15,7 @@ public class InMemoryTaskManagerTest {
     protected Task task;
     protected Epic epic;
     protected Subtask subtask;
+
     @BeforeEach
     public void beforeEach() {
         manager = Managers.getDefaultTaskManager();
@@ -61,7 +62,7 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldTaskNotChangeAfterAdd(){
+    public void shouldTaskNotChangeAfterAdd() {
         task = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         manager.addTask(task);
         Task returnTask = manager.getTask(task.getId());
@@ -72,16 +73,30 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void shouldDeletedSubtaskHaveNotID(){
+    public void shouldDeletedSubtaskHaveNotID() {
         epic = new Epic("Эпик 1", "Описание эпика 1");
         manager.addEpic(epic);
         subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
         manager.addSubtask(subtask);
-        int subtaskId = subtask.getId();
+        int subtaskId = subtask.getEpicId();
         manager.deleteSubtask(subtaskId);
-        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
-        manager.addSubtask(subtask1);
-        int subtask2Id = subtask1.getId();
+        subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        manager.addSubtask(subtask);
+        int subtask2Id = subtask.getEpicId();
         Assertions.assertEquals(subtaskId, subtask2Id);
+    }
+
+    @Test
+    public void shouldEpicHaveNotIrrelevantSubtasksID() {
+        epic = new Epic("Эпик 1", "Описание эпика 1");
+        manager.addEpic(epic);
+        subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        epic.addSubtask(subtask);
+        int subtaskId = subtask.getEpicId();
+        epic.getAllSubtasks().remove(subtaskId);
+        subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        epic.addSubtask(subtask);
+        int subtask2ID = subtask.getEpicId();
+        Assertions.assertEquals(subtaskId, subtask2ID);
     }
 }

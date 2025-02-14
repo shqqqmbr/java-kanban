@@ -17,7 +17,7 @@ public class Epic extends Task {
         allSubtasks.add(subtask);
     }
 
-public ArrayList<Subtask> getAllSubtasks() {
+    public ArrayList<Subtask> getAllSubtasks() {
         return allSubtasks;
     }
 
