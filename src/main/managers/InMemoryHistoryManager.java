@@ -49,12 +49,12 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (node == null) {
             return;
         }
-        if (node.next == null) {
+        if (node.next != null) {
             node.next.prev = node.prev;
         } else {
             tail = node.prev;
         }
-        if (node.prev == null) {
+        if (node.prev != null) {
             node.prev.next = node.next;
         } else {
             head = node.next;
@@ -64,12 +64,17 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void addTask(Task task) {
-
+        if (task!=null){
+            if (historyMap.get(task.getId())!=null){
+                removeNode(historyMap.get(task.getId()));
+            }
+            linkLast(task);
+        }
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
-        ArrayList<Task> history = new ArrayList<>();
+    public List<Task> getHistory() {
+        List<Task> history = new ArrayList<>();
         for (Node value: historyMap.values()){
             history.add(value.task);
         }

@@ -63,7 +63,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() +
+        return "\n" + this.getClass().getSimpleName() +
                 "\n" + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +

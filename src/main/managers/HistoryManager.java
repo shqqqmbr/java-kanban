@@ -10,7 +10,7 @@ import java.util.Set;
 public interface HistoryManager {
     public void addTask(Task task);
 
-    public ArrayList<Task> getHistory();
+    public List<Task> getHistory();
 
     public ArrayList<Task> getTasks();
 
