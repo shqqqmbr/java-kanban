@@ -22,17 +22,17 @@ public class Main {
         manager.addEpic(epic1);
 
 
-        Subtask subtask1_1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.NEW, epic1.getId());
-        Subtask subtask1_2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.NEW, epic1.getId());
-        manager.addSubtask(subtask1_1);
-        manager.addSubtask(subtask1_2);
+        Subtask subtask1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.NEW, epic1.getId());
+        Subtask subtask2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.NEW, epic1.getId());
+        manager.addSubtask(subtask1);
+        manager.addSubtask(subtask1);
 
 
-        Subtask newSubtask1_1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.DONE, epic1.getId());
-        Subtask newSubtask1_2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.DONE, epic1.getId());
+        Subtask newSubtask1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.DONE, epic1.getId());
+        Subtask newSubtask2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.DONE, epic1.getId());
 
-        manager.updateSubtask(subtask1_1, newSubtask1_1);
-        manager.updateSubtask(subtask1_2, newSubtask1_2);
+        manager.updateSubtask(subtask1, newSubtask1);
+        manager.updateSubtask(subtask1, newSubtask2);
         System.out.println("------------------------------------------");
         System.out.println("           | Вывод всех задач |           ");
         System.out.println(manager.getAllTasks());
