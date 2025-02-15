@@ -1,10 +1,7 @@
 package managers;
 
 import main.constants.Status;
-import main.managers.HistoryManager;
-import main.managers.Managers;
-import main.managers.Node;
-import main.managers.TaskManager;
+import main.managers.*;
 import main.tasks.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManagerTest {
-    HistoryManager manager;
+    InMemoryHistoryManager manager;
     TaskManager taskManager;
     protected Task task1;
     protected Task task2;
@@ -22,7 +19,7 @@ public class InMemoryHistoryManagerTest {
 
     @BeforeEach
     public void beforeEach() {
-        manager = Managers.getDefaultHistoryManager();
+        manager = new InMemoryHistoryManager();
         taskManager = Managers.getDefaultTaskManager();
         task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         task2 = new Task("Задача 2", "Описание задачи 2", Status.DONE);
@@ -35,17 +32,17 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void shouldLastVersionTaskSaveInHistoryManager() {
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addTask(task3);
+        manager.add(task1);
+        manager.add(task2);
+        manager.add(task3);
         Assertions.assertNotNull(manager.getHistory());
     }
 
     @Test
     public void linkLastTest() {
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addTask(task3);
+        manager.add(task1);
+        manager.add(task2);
+        manager.add(task3);
         Map<Integer, Node> history = manager.getHistoryMap();
         Assertions.assertNull(history.get(task3.getId()).next);
         Assertions.assertNotNull(history.get(task3.getId()).prev);
@@ -53,9 +50,9 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void removeNodeTest() {
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addTask(task3);
+        manager.add(task1);
+        manager.add(task2);
+        manager.add(task3);
         Map<Integer, Node> history = manager.getHistoryMap();
         Assertions.assertTrue(history.containsKey(task1.getId()));
         Assertions.assertTrue(history.containsKey(task2.getId()));
@@ -69,9 +66,9 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void addTaskTest() {
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addTask(task3);
+        manager.add(task1);
+        manager.add(task2);
+        manager.add(task3);
         List<Task> history = manager.getHistory();
         Assertions.assertEquals(history.size(), 3);
         Assertions.assertEquals(task1, history.get(0));
