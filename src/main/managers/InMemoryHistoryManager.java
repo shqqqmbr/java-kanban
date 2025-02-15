@@ -32,7 +32,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         historyMap.remove(id);
     }
 
-    public Map<Integer, Node> getHistoryMap(){
+    public Map<Integer, Node> getHistoryMap() {
         return historyMap;
     }
 
