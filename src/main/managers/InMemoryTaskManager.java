@@ -1,5 +1,7 @@
 package main.managers;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,9 @@ public class InMemoryTaskManager implements TaskManager {
     private int id = 0;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
+
+    public InMemoryTaskManager(){
+    }
 
 
     @Override

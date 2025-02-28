@@ -5,12 +5,15 @@ import main.managers.Managers;
 import main.managers.TaskManager;
 import main.tasks.*;
 
-АФАФААФ
+import java.io.File;
+import java.io.IOException;
+
 
 public class Main {
 
     //внизу вопрос
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
+        File file = File.createTempFile("tasks", ".csv");
         TaskManager manager = Managers.getDefaultTaskManager();
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW);
