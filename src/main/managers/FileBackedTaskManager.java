@@ -7,16 +7,14 @@ import main.tasks.Epic;
 import main.tasks.Subtask;
 import main.tasks.Task;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     File file;
-
-    public FileBackedTaskManager(File file){
+    InMemoryTaskManager manager = new InMemoryTaskManager();
+    public FileBackedTaskManager(File file) throws ManagerSaveException {
         this.file = file;
+        load(file);
     }
 
 
@@ -37,7 +35,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    private static Task fromString(String value){
+    private Task fromString(String value){
         String[] splValue = value.split(",");
         int id = Integer.parseInt(splValue[0]);
         Type type = Type.valueOf(splValue[1]);
@@ -48,11 +46,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         switch (type){
             case TASK:
-                return new Task(name, description, status);
+                Task task = new Task(name, description, status);
+                manager.addTask(task);
+                return task;
             case EPIC:
-                return new Epic(name, description);
+                Epic epic = new Epic(name, description);
+                manager.addEpic(epic);
+                return epic;
             case SUBTASK:
-                return new Subtask(name, description, status, epicId);
+                Subtask subtask = new Subtask(name, description, status, epicId);
+                manager.addSubtask(subtask);
+                return subtask;
             default:
                 throw new IllegalArgumentException("Неизвестный тип задачи.");
         }
@@ -73,7 +77,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTaskManager loadFromFile(File file){
+    private void load(File file) throws ManagerSaveException {
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            while (br.ready()){
+                fromString(br.readLine());
+            }
+        } catch (FileNotFoundException e) {
+            throw new ManagerSaveException("Файл не найден.");
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка при чтении файла.");
+        }
+    }
+
+    public static FileBackedTaskManager loadFromFile(File file) throws ManagerSaveException{
         return new FileBackedTaskManager(file);
     }
 
@@ -83,7 +99,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -93,7 +109,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -103,7 +119,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -113,7 +129,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -123,7 +139,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -133,7 +149,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -143,7 +159,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -153,7 +169,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -163,7 +179,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -173,7 +189,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -183,7 +199,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -193,7 +209,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try {
             save();
         } catch (ManagerSaveException e){
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 }
