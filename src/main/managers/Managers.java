@@ -1,9 +1,7 @@
 package main.managers;
 
-import java.io.IOException;
-
 public final class Managers {
-    public static TaskManager getDefaultTaskManager(){
+    public static TaskManager getDefaultTaskManager() {
         return new InMemoryTaskManager();
     }
 
