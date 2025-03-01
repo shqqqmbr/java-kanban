@@ -28,9 +28,9 @@ public class Main {
         manager.addSubtask(subtask1);
         manager.addSubtask(subtask2);
 
-        FileBackedTaskManager FBmanager = FileBackedTaskManager.loadFromFile(file);
-        System.out.println(FBmanager.getAllTasks());
-        System.out.println(FBmanager.getAllEpics());
-        System.out.println(FBmanager.getAllSubtasks());
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+        System.out.println(fileBackedTaskManager.getAllTasks());
+        System.out.println(fileBackedTaskManager.getAllEpics());
+        System.out.println(fileBackedTaskManager.getAllSubtasks());
     }
 }
