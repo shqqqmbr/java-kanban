@@ -3,8 +3,6 @@ package main;
 import main.constants.Status;
 import main.exceptions.ManagerSaveException;
 import main.managers.FileBackedTaskManager;
-import main.managers.Managers;
-import main.managers.TaskManager;
 import main.tasks.*;
 
 import java.io.File;
@@ -13,7 +11,6 @@ import java.io.IOException;
 
 public class Main {
 
-    //внизу вопрос
     public static void main(String[] args) throws ManagerSaveException, IOException {
         File file = File.createTempFile("tasks", ".csv");
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
@@ -33,5 +30,7 @@ public class Main {
 
         FileBackedTaskManager FBmanager = FileBackedTaskManager.loadFromFile(file);
         System.out.println(FBmanager.getAllTasks());
+        System.out.println(FBmanager.getAllEpics());
+        System.out.println(FBmanager.getAllSubtasks());
     }
 }
