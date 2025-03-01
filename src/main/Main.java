@@ -1,6 +1,8 @@
 package main;
 
 import main.constants.Status;
+import main.exceptions.ManagerSaveException;
+import main.managers.FileBackedTaskManager;
 import main.managers.Managers;
 import main.managers.TaskManager;
 import main.tasks.*;
@@ -12,8 +14,9 @@ import java.io.IOException;
 public class Main {
 
     //внизу вопрос
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws ManagerSaveException, IOException {
         File file = File.createTempFile("tasks", ".csv");
+        FileBackedTaskManager fbTaskManager = new FileBackedTaskManager(file);
         TaskManager manager = Managers.getDefaultTaskManager();
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW);
@@ -56,5 +59,8 @@ public class Main {
         System.out.println("            | Вывод истории |             ");
         System.out.println(manager.getHistory());
         System.out.println("------------------------------------------");
+
+
+        fbTaskManager.
     }
 }
