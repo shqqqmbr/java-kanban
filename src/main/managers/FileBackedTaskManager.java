@@ -86,14 +86,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void load(File file) throws ManagerSaveException {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            if (br.ready()) {
-                String line = br.readLine();
-                if (line.isEmpty()) {
-                    return;
-                }
-            } else {
-                return;
-            }
+            br.readLine();
             while (br.ready()) {
                 fromString(br.readLine());
             }
