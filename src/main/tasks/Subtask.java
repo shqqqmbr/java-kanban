@@ -1,6 +1,7 @@
 package main.tasks;
 
 import main.constants.Status;
+import main.constants.Type;
 
 public class Subtask extends Task {
     private final int epicId;
@@ -13,4 +14,5 @@ public class Subtask extends Task {
     public int getEpicId() {
         return epicId;
     }
+
 }

@@ -29,6 +29,8 @@ public class Main {
         manager.addSubtask(subtask2);
 
         FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+        Task task3 = new Task("Задача 3", "Описание задачи 3", Status.NEW);
+        fileBackedTaskManager.addTask(task3);
         System.out.println(fileBackedTaskManager.getAllTasks());
         System.out.println(fileBackedTaskManager.getAllEpics());
         System.out.println(fileBackedTaskManager.getAllSubtasks());

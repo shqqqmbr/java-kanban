@@ -1,8 +1,6 @@
 package main.managers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import main.tasks.*;
 
@@ -10,13 +8,26 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
-    private int id = 0;
+    protected int id = 0;
+    private int count = 0;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
 
     public InMemoryTaskManager() {
     }
 
+    public void counter(int count){
+        this.count = count;
+    }
+
+    @Override
+    public int filesMaxId(){
+        Set<Integer> allTasksId = new HashSet<>();
+        allTasksId.addAll(tasks.keySet());
+        allTasksId.addAll(epics.keySet());
+        allTasksId.addAll(subtasks.keySet());
+        return Collections.max(allTasksId);
+    }
 
     @Override
     public void addTask(Task task) {

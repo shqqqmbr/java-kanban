@@ -173,18 +173,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             case TASK:
                 Task task = new Task(name, description, status);
                 task.setId(id);
-                tasks.put(id, task);
+                tasks.put(task.getId(), task);
                 return task;
             case EPIC:
                 Epic epic = new Epic(name, description);
                 epic.setId(id);
-                epics.put(id, epic);
+                epics.put(epic.getId(), epic);
                 return epic;
             case SUBTASK:
                 epicId = Integer.parseInt(splValue[5]);
                 Subtask subtask = new Subtask(name, description, status, epicId);
                 subtask.setId(id);
-                subtasks.put(id, subtask);
+                subtasks.put(subtask.getId(), subtask);
 
                 Epic parentEpic = epics.get(epicId);
                 if (parentEpic != null) {
@@ -202,9 +202,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             return String.format("%d,SUBTASK,%s,%s,%s,%d", subtask.getId(), subtask.getName(),
                     subtask.getStatus(), subtask.getDescription(), subtask.getEpicId());
         } else if (task instanceof Epic) {
-            return String.format("%d,TASK,%s,%s,%s", task.getId(), task.getName(), task.getStatus(), task.getDescription());
-        } else if (task instanceof Task) {
             return String.format("%d,EPIC,%s,%s,%s", task.getId(), task.getName(), task.getStatus(), task.getDescription());
+        } else if (task instanceof Task) {
+            return String.format("%d,TASK,%s,%s,%s", task.getId(), task.getName(), task.getStatus(), task.getDescription());
         } else {
             throw new IllegalArgumentException("Неизвестный тип задачи.");
         }
@@ -216,6 +216,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             while (br.ready()) {
                 fromString(br.readLine());
             }
+            counter(filesMaxId());
         } catch (FileNotFoundException e) {
             throw new ManagerSaveException("Файл не найден.");
         } catch (IOException e) {

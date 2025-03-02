@@ -3,6 +3,7 @@ package main.tasks;
 import java.util.ArrayList;
 
 import main.constants.Status;
+import main.constants.Type;
 
 
 public class Epic extends Task {
@@ -39,5 +40,4 @@ public class Epic extends Task {
             setStatus(Status.IN_PROGRESS);
         }
     }
-
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
+    public int filesMaxId();
+
     public void addTask(Task task);
 
     public void addEpic(Epic epic);
