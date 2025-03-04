@@ -8,7 +8,6 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
-    protected int id = 0;
     private int count = 0;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
@@ -16,12 +15,15 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager() {
     }
 
-    public void counter(int count){
+    public int getCount(int count) {
+        return count;
+    }
+
+    public void setCount(int count) {
         this.count = count;
     }
 
-    @Override
-    public int filesMaxId(){
+    public int filesMaxId() {
         Set<Integer> allTasksId = new HashSet<>();
         allTasksId.addAll(tasks.keySet());
         allTasksId.addAll(epics.keySet());
@@ -31,19 +33,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addTask(Task task) {
-        task.setId(id++);
+        task.setId(count++);
         tasks.put(task.getId(), task);
     }
 
     @Override
     public void addEpic(Epic epic) {
-        epic.setId(id++);
+        epic.setId(count++);
         epics.put(epic.getId(), epic);
     }
 
     @Override
     public void addSubtask(Subtask subtask) {
-        subtask.setId(id++);
+        subtask.setId(count++);
         subtasks.put(subtask.getId(), subtask);
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtask(subtask);
