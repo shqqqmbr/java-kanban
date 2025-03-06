@@ -216,7 +216,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             while (br.ready()) {
                 fromString(br.readLine());
             }
-            setCount(filesMaxId());
+            setCount(filesMaxId()+1);
         } catch (FileNotFoundException e) {
             throw new ManagerSaveException("Файл не найден.");
         } catch (IOException e) {

@@ -15,10 +15,6 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager() {
     }
 
-    public int getCount(int count) {
-        return count;
-    }
-
     public void setCount(int count) {
         this.count = count;
     }
