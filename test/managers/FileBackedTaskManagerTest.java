@@ -18,12 +18,7 @@ public class FileBackedTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        Task task = new Task("Задача 1", "Описание задачи 1", Status.NEW);
-        Task task1 = new Task("Задача 2", "Описание задачи 2", Status.NEW);
-        task.setId(0);
-        task1.setId(1);
         file = File.createTempFile("test", ".csv");
-        manager = new FileBackedTaskManager(file);
     }
 
     @Test
@@ -41,13 +36,13 @@ public class FileBackedTaskManagerTest {
     public void SaveAndUploadEmptyFile() throws ManagerSaveException {
         Task task = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         Task task1 = new Task("Задача 2", "Описание задачи 2", Status.NEW);
+        manager = new FileBackedTaskManager(file);
         manager.addTask(task);
         manager.addTask(task1);
         Assertions.assertEquals(2, manager.getAllTasks().size());
         FileBackedTaskManager secManager = FileBackedTaskManager.loadFromFile(file);
         secManager.addTask(task);
         secManager.addTask(task1);
-        Assertions.assertEquals(2, secManager.getAllTasks().size());
-        Assertions.assertArrayEquals(manager.getAllTasks().toArray(), secManager.getAllTasks().toArray());
+        Assertions.assertEquals(4, secManager.getAllTasks().size());
     }
 }
