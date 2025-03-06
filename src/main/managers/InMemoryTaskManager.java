@@ -1,35 +1,47 @@
 package main.managers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import main.tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private int id = 0;
+    protected final HashMap<Integer, Task> tasks = new HashMap<>();
+    protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    protected final HashMap<Integer, Epic> epics = new HashMap<>();
+    private int maxId = 0;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
 
+    public InMemoryTaskManager() {
+    }
+
+    public void setMaxId(int maxId) {
+        this.maxId = maxId;
+    }
+
+    public int filesMaxId() {
+        Set<Integer> allTasksId = new HashSet<>();
+        allTasksId.addAll(tasks.keySet());
+        allTasksId.addAll(epics.keySet());
+        allTasksId.addAll(subtasks.keySet());
+        return Collections.max(allTasksId);
+    }
 
     @Override
     public void addTask(Task task) {
-        task.setId(id++);
+        task.setId(maxId++);
         tasks.put(task.getId(), task);
     }
 
     @Override
     public void addEpic(Epic epic) {
-        epic.setId(id++);
+        epic.setId(maxId++);
         epics.put(epic.getId(), epic);
     }
 
     @Override
     public void addSubtask(Subtask subtask) {
-        subtask.setId(id++);
+        subtask.setId(maxId++);
         subtasks.put(subtask.getId(), subtask);
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtask(subtask);

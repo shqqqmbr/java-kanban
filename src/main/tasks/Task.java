@@ -5,10 +5,10 @@ import java.util.Objects;
 import main.constants.Status;
 
 public class Task {
-    private String name;
-    private String description;
-    private Status status;
-    private int id;
+    protected String name;
+    protected String description;
+    protected Status status;
+    protected int id;
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -65,11 +65,10 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() +
-                "\n" + "{name='" + name + '\'' +
+        return this.getClass().getSimpleName() + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", id=" + id +
-                '}';
+                '}' + "\n";
     }
 }

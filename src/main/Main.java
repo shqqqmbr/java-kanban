@@ -1,17 +1,19 @@
 package main;
 
 import main.constants.Status;
-import main.managers.Managers;
-import main.managers.TaskManager;
+import main.exceptions.ManagerSaveException;
+import main.managers.FileBackedTaskManager;
 import main.tasks.*;
 
+import java.io.File;
+import java.io.IOException;
 
 
 public class Main {
 
-    //внизу вопрос
-    public static void main(String[] args) {
-        TaskManager manager = Managers.getDefaultTaskManager();
+    public static void main(String[] args) throws ManagerSaveException, IOException {
+        File file = File.createTempFile("tasks", ".csv");
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW);
         manager.addTask(task1);
@@ -24,34 +26,13 @@ public class Main {
         Subtask subtask1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.NEW, epic1.getId());
         Subtask subtask2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.NEW, epic1.getId());
         manager.addSubtask(subtask1);
-        manager.addSubtask(subtask1);
+        manager.addSubtask(subtask2);
 
-
-        Subtask newSubtask1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.DONE, epic1.getId());
-        Subtask newSubtask2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.DONE, epic1.getId());
-
-        manager.updateSubtask(subtask1, newSubtask1);
-        manager.updateSubtask(subtask1, newSubtask2);
-        System.out.println("------------------------------------------");
-        System.out.println("           | Вывод всех задач |           ");
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpics());
-        System.out.println(manager.getAllSubtasks());
-        System.out.println("------------------------------------------");
-
-
-        manager.getTask(0);
-        manager.getTask(1);
-        manager.getTask(0);
-        manager.getTask(1);
-        manager.getEpic(2);
-        manager.getSubtask(3);
-        manager.getSubtask(4);
-        manager.getSubtask(3);
-        manager.getSubtask(4);
-        System.out.println("------------------------------------------");
-        System.out.println("            | Вывод истории |             ");
-        System.out.println(manager.getHistory());
-        System.out.println("------------------------------------------");
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+        Task task3 = new Task("Задача 3", "Описание задачи 3", Status.NEW);
+        fileBackedTaskManager.addTask(task3);
+        System.out.println(fileBackedTaskManager.getAllTasks());
+        System.out.println(fileBackedTaskManager.getAllEpics());
+        System.out.println(fileBackedTaskManager.getAllSubtasks());
     }
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import main.constants.Status;
 
-
 public class Epic extends Task {
 
     private final ArrayList<Subtask> allSubtasks = new ArrayList<>();
@@ -39,5 +38,4 @@ public class Epic extends Task {
             setStatus(Status.IN_PROGRESS);
         }
     }
-
 }
