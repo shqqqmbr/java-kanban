@@ -3,7 +3,6 @@ package main.tasks;
 import java.util.Objects;
 
 import main.constants.Status;
-import main.constants.Type;
 
 public class Task {
     protected String name;
