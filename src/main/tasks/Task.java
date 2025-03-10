@@ -1,5 +1,7 @@
 package main.tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import main.constants.Status;
@@ -9,6 +11,8 @@ public class Task {
     protected String description;
     protected Status status;
     protected int id;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -16,6 +20,9 @@ public class Task {
         this.status = status;
     }
 
+    public LocalDateTime getEndTime(){
+        return startTime.plus(duration);
+    }
 
     public String getDescription() {
         return description;

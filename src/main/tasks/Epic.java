@@ -1,5 +1,7 @@
 package main.tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import main.constants.Status;
@@ -7,6 +9,9 @@ import main.constants.Status;
 public class Epic extends Task {
 
     private final ArrayList<Subtask> allSubtasks = new ArrayList<>();
+
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
