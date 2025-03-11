@@ -10,11 +10,21 @@ public class Epic extends Task {
 
     private final ArrayList<Subtask> allSubtasks = new ArrayList<>();
 
-    protected Duration duration;
-    protected LocalDateTime startTime;
+    private Duration duration;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
+    }
+
+    public Epic(String name, String description, Duration duration) {
+        super(name, description, Status.NEW);
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime(){
+
     }
 
     public void addSubtask(Subtask subtask) {

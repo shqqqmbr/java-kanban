@@ -20,6 +20,13 @@ public class Task {
         this.status = status;
     }
 
+    public Task(String name, String description, Status status, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+    }
+
     public LocalDateTime getEndTime(){
         return startTime.plus(duration);
     }
