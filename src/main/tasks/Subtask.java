@@ -22,4 +22,8 @@ public class Subtask extends Task {
         return epicId;
     }
 
+    public LocalDateTime getEndTime(){
+        return startTime.plus(duration);
+    }
+
 }
