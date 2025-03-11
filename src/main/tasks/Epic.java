@@ -10,19 +10,15 @@ import main.constants.Status;
 
 public class Epic extends Task {
 
-    private final ArrayList<Subtask> allSubtasks = new ArrayList<>();
-
-    private Duration duration;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    protected final ArrayList<Subtask> allSubtasks = new ArrayList<>();
+    protected LocalDateTime endTime;
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
     }
 
-    public Epic(String name, String description, Duration duration) {
-        super(name, description, Status.NEW);
-        this.duration = duration;
+    public Epic(String name, String description, Duration duration, LocalDateTime startTime) {
+        super(name, description, Status.NEW, duration, startTime);
     }
 
     public Duration getEpicDuration(){
@@ -33,7 +29,7 @@ public class Epic extends Task {
 
     }
 
-    public LocalDateTime getStartTime(){
+    public LocalDateTime getEpicStartTime(){
         return allSubtasks.stream()
                 .filter(subtask -> subtask.getStartTime()!=null && subtask.getEndTime()!=null)
                 .map(Subtask::getStartTime)

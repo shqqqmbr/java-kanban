@@ -20,11 +20,28 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String name, String description, Status status, Duration duration) {
+    public Task(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public LocalDateTime getEndTime(){
@@ -82,7 +99,8 @@ public class Task {
         return this.getClass().getSimpleName() + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", id=" + id + ", duration=" + this.g +
+                ", id=" + id + ", duration=" + duration +
+                ", startTime=" + startTime +
                 '}' + "\n";
     }
 }
