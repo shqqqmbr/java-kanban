@@ -24,7 +24,8 @@ public class Epic extends Task {
     }
 
     public LocalDateTime getEndTime(){
-
+        LocalDateTime endTime = allSubtasks.stream()
+                .filter()
     }
 
     public void addSubtask(Subtask subtask) {
