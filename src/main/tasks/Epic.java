@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 import main.constants.Status;
 
@@ -30,6 +31,14 @@ public class Epic extends Task {
                 .map(subtask -> Duration.between(subtask.getStartTime(), subtask.getEndTime()))
                 .reduce(Duration.ZERO, Duration::plus);
 
+    }
+
+    public LocalDateTime getStartTime(){
+        return allSubtasks.stream()
+                .filter(subtask -> subtask.getStartTime()!=null && subtask.getEndTime()!=null)
+                .map(Subtask::getStartTime)
+                .min(Comparator.naturalOrder())
+                .orElse(null);
     }
 
     public LocalDateTime getEndTime(){
