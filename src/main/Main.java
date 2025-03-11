@@ -7,6 +7,7 @@ import main.tasks.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 
 
 public class Main {
@@ -23,8 +24,8 @@ public class Main {
         manager.addEpic(epic1);
 
 
-        Subtask subtask1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.NEW, epic1.getId());
-        Subtask subtask2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.NEW, epic1.getId());
+        Subtask subtask1 = new Subtask("Подзадача 1_1", "Описание подзадачи 1_1", Status.NEW, epic1.getId(), 5);
+        Subtask subtask2 = new Subtask("Подзадача 1_2", "Описание подзадачи 1_2", Status.NEW, epic1.getId(), 10);
         manager.addSubtask(subtask1);
         manager.addSubtask(subtask2);
 

@@ -82,7 +82,7 @@ public class Task {
         return this.getClass().getSimpleName() + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", id=" + id +
+                ", id=" + id + ", duration=" + this.g +
                 '}' + "\n";
     }
 }

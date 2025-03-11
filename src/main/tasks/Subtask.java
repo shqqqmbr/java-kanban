@@ -15,10 +15,10 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    public Subtask(String name, String description, Status status, int epicId, Duration duration) {
+    public Subtask(String name, String description, Status status, int epicId, long duration) {
         super(name, description, status);
         this.epicId = epicId;
-        this.duration = duration;
+        this.duration = Duration.ofMinutes(duration);
     }
 
     public LocalDateTime getEndTime() {
