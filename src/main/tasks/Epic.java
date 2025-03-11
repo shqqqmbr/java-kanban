@@ -3,6 +3,7 @@ package main.tasks;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import main.constants.Status;
 
@@ -23,9 +24,16 @@ public class Epic extends Task {
         this.duration = duration;
     }
 
+    public Duration getEpicDuration(){
+        return allSubtasks.stream()
+                .filter(subtask -> subtask.getStartTime()!=null && subtask.getEndTime()!=null)
+                .map(subtask -> Duration.between(subtask.getStartTime(), subtask.getEndTime()))
+                .reduce(Duration.ZERO, Duration::plus);
+
+    }
+
     public LocalDateTime getEndTime(){
-        LocalDateTime endTime = allSubtasks.stream()
-                .filter()
+        return startTime.plus(duration);
     }
 
     public void addSubtask(Subtask subtask) {
