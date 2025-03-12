@@ -11,14 +11,13 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 
-public class FileBackedTaskManagerTest {
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
     File file;
     FileBackedTaskManager manager;
 
-
-    @BeforeEach
-    public void beforeEach() throws IOException {
-        file = File.createTempFile("test", ".csv");
+    @Override
+    protected FileBackedTaskManager createTaskManager(){
+        return new FileBackedTaskManager();
     }
 
     @Test

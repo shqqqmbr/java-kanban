@@ -1,6 +1,7 @@
 package managers;
 
 import main.constants.Status;
+import main.managers.InMemoryTaskManager;
 import main.managers.Managers;
 import main.managers.TaskManager;
 import main.tasks.Epic;
@@ -10,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class InMemoryTaskManagerTest {
+public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
     TaskManager manager;
     protected Task task;
     protected Epic epic;
     protected Subtask subtask;
 
-    @BeforeEach
-    public void beforeEach() {
-        manager = Managers.getDefaultTaskManager();
+    @Override
+    protected InMemoryTaskManager createTaskManager(){
+        return new InMemoryTaskManager();
     }
 
     @Test
