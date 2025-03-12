@@ -16,9 +16,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public FileBackedTaskManager(){
-    }
-
     public static FileBackedTaskManager loadFromFile(File file) throws ManagerSaveException {
         FileBackedTaskManager fb = new FileBackedTaskManager(file);
         fb.load(file);
@@ -161,7 +158,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     .forEach(epic -> {
                         try {
                             fileWriter.write(toString(epic) + "\n");
-                        } catch (IOException e){
+                        } catch (IOException e) {
                             throw new RuntimeException(e.getMessage());
                         }
                     });
@@ -169,7 +166,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     .forEach(subtask -> {
                         try {
                             fileWriter.write(toString(subtask) + "\n");
-                        } catch (IOException e){
+                        } catch (IOException e) {
                             throw new RuntimeException(e.getMessage());
                         }
                     });

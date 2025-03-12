@@ -5,19 +5,20 @@ import main.exceptions.ManagerSaveException;
 import main.managers.FileBackedTaskManager;
 import main.tasks.Task;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 
-public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
-    File file;
-    FileBackedTaskManager manager;
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
+    File file = File.createTempFile("tests", ".csv");
+
+    public FileBackedTaskManagerTest() throws IOException {
+    }
 
     @Override
-    protected FileBackedTaskManager createTaskManager(){
-        return new FileBackedTaskManager();
+    protected FileBackedTaskManager createTaskManager() {
+        return new FileBackedTaskManager(file);
     }
 
     @Test

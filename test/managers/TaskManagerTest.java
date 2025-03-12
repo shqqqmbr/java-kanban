@@ -9,13 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
-    protected T tm;
+    protected T manager;
 
     protected abstract T createTaskManager();
 
     @BeforeEach
     public void beforeEach(){
-        tm = createTaskManager();
+        manager = createTaskManager();
 
     }
 
@@ -24,9 +24,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
         Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
         Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic.getId());
-        tm.addEpic(epic);
-        tm.addSubtask(subtask1);
-        tm.addSubtask(subtask2);
+        manager.addEpic(epic);
+        manager.addSubtask(subtask1);
+        manager.addSubtask(subtask2);
         Assertions.assertTrue(epic.getStatus()==Status.NEW);
         subtask1.setStatus(Status.DONE);
         subtask2.setStatus(Status.DONE);
@@ -45,8 +45,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void shouldSubtaskHaveEpic(){
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
         Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
-        tm.addEpic(epic);
-        tm.addSubtask(subtask1);
-        Assertions.assertTrue(tm.getAllEpics().contains(epic));
+        manager.addEpic(epic);
+        manager.addSubtask(subtask1);
+        Assertions.assertTrue(manager.getAllEpics().contains(epic));
     }
+
 }

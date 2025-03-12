@@ -2,20 +2,13 @@ package managers;
 
 import main.constants.Status;
 import main.managers.InMemoryTaskManager;
-import main.managers.Managers;
-import main.managers.TaskManager;
 import main.tasks.Epic;
 import main.tasks.Subtask;
 import main.tasks.Task;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
-    TaskManager manager;
-    protected Task task;
-    protected Epic epic;
-    protected Subtask subtask;
 
     @Override
     protected InMemoryTaskManager createTaskManager(){
@@ -24,7 +17,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void shouldAddAndReturnTaskById() {
-        task = new Task("Задача 1", "Описание задачи 1", Status.NEW);
+        Task task = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         manager.addTask(task);
         Assertions.assertTrue(manager.getAllTasks().size() == 1);
         Assertions.assertEquals(task, manager.getTask(task.getId()));
@@ -32,7 +25,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void shouldAddAndReturnEpicById() {
-        epic = new Epic("Эпик 1", "Описание эпика 1");
+        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
         manager.addEpic(epic);
         Assertions.assertTrue(manager.getAllEpics().size() == 1);
         Assertions.assertEquals(epic, manager.getEpic(epic.getId()));
@@ -40,8 +33,8 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void shouldAddAndReturnSubtaskById() {
-        epic = new Epic("Эпик 1", "Описание эпика 1");
-        subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
+        Subtask subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
         manager.addEpic(epic);
         manager.addSubtask(subtask);
         Assertions.assertTrue(manager.getAllSubtasks().size() == 1);
@@ -64,7 +57,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void shouldTaskNotChangeAfterAdd() {
-        task = new Task("Задача 1", "Описание задачи 1", Status.NEW);
+        Task task = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         manager.addTask(task);
         Task returnTask = manager.getTask(task.getId());
         Assertions.assertEquals("Задача 1", returnTask.getName());
@@ -75,9 +68,9 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void shouldDeletedSubtaskHaveNotID() {
-        epic = new Epic("Эпик 1", "Описание эпика 1");
+        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
         manager.addEpic(epic);
-        subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        Subtask subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
         manager.addSubtask(subtask);
         int subtaskId = subtask.getEpicId();
         manager.deleteSubtask(subtaskId);
@@ -89,9 +82,9 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
 
     @Test
     public void shouldEpicHaveNotIrrelevantSubtasksID() {
-        epic = new Epic("Эпик 1", "Описание эпика 1");
+        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
         manager.addEpic(epic);
-        subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        Subtask subtask = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
         epic.addSubtask(subtask);
         int subtaskId = subtask.getEpicId();
         epic.getAllSubtasks().remove(subtaskId);
