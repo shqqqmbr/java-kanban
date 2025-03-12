@@ -16,27 +16,27 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager() {
     }
 
-    public boolean validation(){
-        prioritizedTasks.stream()
-
+    public boolean isTasksIntersect(Task task1, Task task2) {
+        return !task1.getEndTime().isBefore(task2.getStartTime()) &&
+                !task1.getStartTime().isAfter(task2.getEndTime());
     }
 
-    public TreeSet<Task> getPrioritizedTasks(){
+    public TreeSet<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
 
-    public void addToSetTasks(Task task){
-        if (task.getStartTime()==null){
+    public void addToSetTasks(Task task) {
+        if (task.getStartTime() == null) {
             return;
         }
         prioritizedTasks.add(task);
     }
 
-    public void deleteFromSetTasks(Task task){
+    public void deleteFromSetTasks(Task task) {
         prioritizedTasks.remove(task);
     }
 
-    public void updateTaskFromSetTasks(Task task, Task newTask){
+    public void updateTaskFromSetTasks(Task task, Task newTask) {
         deleteFromSetTasks(task);
         addToSetTasks(newTask);
     }
@@ -57,6 +57,11 @@ public class InMemoryTaskManager implements TaskManager {
     public void addTask(Task task) {
         task.setId(maxId++);
         tasks.put(task.getId(), task);
+        boolean isIntersect = prioritizedTasks.stream()
+                        .anyMatch(task1 -> isTasksIntersect(task, task1));
+        if (isIntersect){
+            throw new ArithmeticException("Tasks intersect on a time line.");
+        }
         addToSetTasks(task);
     }
 
@@ -73,6 +78,11 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtask(subtask);
         epic.updateEpicStatus();
+        boolean isIntersect = prioritizedTasks.stream()
+                .anyMatch(subtask1 -> isTasksIntersect(subtask, subtask1));
+        if (isIntersect){
+            throw new ArithmeticException("Tasks intersect on a time line.");
+        }
         addToSetTasks(subtask);
     }
 
@@ -129,7 +139,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllTasks() {
         tasks.clear();
         prioritizedTasks.stream()
-                .filter(task -> task.getClass()==Task.class)
+                .filter(task -> task.getClass() == Task.class)
                 .peek(task -> prioritizedTasks.remove(task));
     }
 
@@ -147,7 +157,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         subtasks.clear();
         prioritizedTasks.stream()
-                .filter(task -> task.getClass()==Subtask.class)
+                .filter(task -> task.getClass() == Subtask.class)
                 .peek(task -> prioritizedTasks.remove(task));
     }
 
