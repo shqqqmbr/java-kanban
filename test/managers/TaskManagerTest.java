@@ -1,12 +1,14 @@
 package managers;
 
-import main.constants.Status;
 import main.managers.TaskManager;
 import main.tasks.Epic;
 import main.tasks.Subtask;
-import org.junit.jupiter.api.Assertions;
+import main.tasks.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
@@ -14,40 +16,104 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     protected abstract T createTaskManager();
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() {
         manager = createTaskManager();
+    }
+
+    @Test
+    public void addTask() {
+    }
+
+    @Test
+    public void addEpic() {
+    }
+
+    @Test
+    public void addSubtask() {
+    }
+
+    @Test
+    public void deleteTask() {
 
     }
 
     @Test
-    public void checkEpicStatus(){
-        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
-        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
-        Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic.getId());
-        manager.addEpic(epic);
-        manager.addSubtask(subtask1);
-        manager.addSubtask(subtask2);
-        Assertions.assertTrue(epic.getStatus()==Status.NEW);
-        subtask1.setStatus(Status.DONE);
-        subtask2.setStatus(Status.DONE);
-        epic.updateEpicStatus();
-        Assertions.assertTrue(epic.getStatus()==Status.DONE);
-        subtask1.setStatus(Status.NEW);
-        epic.updateEpicStatus();
-        Assertions.assertTrue(epic.getStatus()==Status.IN_PROGRESS);
-        subtask1.setStatus(Status.IN_PROGRESS);
-        subtask2.setStatus(Status.IN_PROGRESS);
-        epic.updateEpicStatus();
-        Assertions.assertTrue(epic.getStatus()==Status.IN_PROGRESS);
+    public void deleteEpic() {
+
     }
 
     @Test
-    public void shouldSubtaskHaveEpic(){
-        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
-        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
-        manager.addEpic(epic);
-        manager.addSubtask(subtask1);
-        Assertions.assertTrue(manager.getAllEpics().contains(epic));
+    public void deleteSubtask() {
+
+    }
+
+    @Test
+    public void updateTask() {
+
+    }
+
+    @Test
+    public void updateEpic() {
+    }
+
+    @Test
+    public void updateSubtask() {
+
+    }
+
+    @Test
+    public void deleteAllTasks() {
+
+    }
+
+    @Test
+    public void deleteAllEpics() {
+//исправлено
+    }
+
+    @Test
+    public void deleteAllSubtasks() {
+
+    }
+
+    @Test
+    public void getAllTasks() {
+
+    }
+
+    @Test
+    public void getAllEpics() {
+
+    }
+
+    @Test
+    public void getAllSubtasks() {
+
+    }
+
+    @Test
+    public void getEpicsSubtasks() {
+
+    }
+
+    @Test
+    public void getTask() {
+
+    }
+
+    @Test
+    public void getEpic() {
+
+    }
+
+    @Test
+    public void getSubtask() {
+
+    }
+
+    @Test
+    public void getHistory() {
+
     }
 
 }

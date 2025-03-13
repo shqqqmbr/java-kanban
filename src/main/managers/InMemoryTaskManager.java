@@ -58,8 +58,8 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(maxId++);
         tasks.put(task.getId(), task);
         boolean isIntersect = prioritizedTasks.stream()
-                        .anyMatch(task1 -> isTasksIntersect(task, task1));
-        if (isIntersect){
+                .anyMatch(task1 -> isTasksIntersect(task, task1));
+        if (isIntersect) {
             throw new ArithmeticException("Tasks intersect on a time line.");
         }
         addToSetTasks(task);
@@ -80,7 +80,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.updateEpicStatus();
         boolean isIntersect = prioritizedTasks.stream()
                 .anyMatch(subtask1 -> isTasksIntersect(subtask, subtask1));
-        if (isIntersect){
+        if (isIntersect) {
             throw new ArithmeticException("Tasks intersect on a time line.");
         }
         addToSetTasks(subtask);
@@ -152,10 +152,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllSubtasks() {
         epics.values().stream()
-                        .forEach(epic -> {
-                            epic.getAllSubtasks().clear();
-                            epic.updateEpicStatus();
-                        });
+                .forEach(epic -> {
+                    epic.getAllSubtasks().clear();
+                    epic.updateEpicStatus();
+                });
         subtasks.clear();
         prioritizedTasks.stream()
                 .forEach(task -> prioritizedTasks.remove(task));

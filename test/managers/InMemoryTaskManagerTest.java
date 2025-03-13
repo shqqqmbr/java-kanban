@@ -8,10 +8,13 @@ import main.tasks.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager>{
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     @Override
-    protected InMemoryTaskManager createTaskManager(){
+    protected InMemoryTaskManager createTaskManager() {
         return new InMemoryTaskManager();
     }
 
@@ -93,25 +96,36 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         int subtask2ID = subtask.getEpicId();
         Assertions.assertEquals(subtaskId, subtask2ID);
     }
+
     @Test
-    public void checkEpicStatus(){
+    public void checkEpicStatus() {
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
         Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
         Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic.getId());
         manager.addEpic(epic);
         manager.addSubtask(subtask1);
         manager.addSubtask(subtask2);
-        Assertions.assertTrue(epic.getStatus()==Status.NEW);
+        Assertions.assertTrue(epic.getStatus() == Status.NEW);
         subtask1.setStatus(Status.DONE);
         subtask2.setStatus(Status.DONE);
         epic.updateEpicStatus();
-        Assertions.assertTrue(epic.getStatus()==Status.DONE);
+        Assertions.assertTrue(epic.getStatus() == Status.DONE);
         subtask1.setStatus(Status.NEW);
         epic.updateEpicStatus();
-        Assertions.assertTrue(epic.getStatus()==Status.IN_PROGRESS);
+        Assertions.assertTrue(epic.getStatus() == Status.IN_PROGRESS);
         subtask1.setStatus(Status.IN_PROGRESS);
         subtask2.setStatus(Status.IN_PROGRESS);
         epic.updateEpicStatus();
-        Assertions.assertTrue(epic.getStatus()==Status.IN_PROGRESS);
+        Assertions.assertTrue(epic.getStatus() == Status.IN_PROGRESS);
+    }
+
+    @Test
+    public void correctIntersect() {
+        Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW,
+                Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 1, 10, 0));
+        Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW,
+                Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 1, 10, 8));
+        boolean isIntersect = manager.isTasksIntersect(task1, task2);
+        Assertions.assertTrue(isIntersect);
     }
 }
