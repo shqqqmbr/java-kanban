@@ -10,18 +10,15 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryHistoryManagerTest{
-    InMemoryHistoryManager manager;
-    TaskManager taskManager;
-    protected Task task1;
-    protected Task task2;
-    protected Task task3;
-
+public class InMemoryHistoryManagerTest {
+    InMemoryHistoryManager historyManager;
+    Task task1;
+    Task task2;
+    Task task3;
 
     @BeforeEach
     public void beforeEach() {
-        manager = new InMemoryHistoryManager();
-        taskManager = Managers.getDefaultTaskManager();
+        historyManager = new InMemoryHistoryManager();
         task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
         task2 = new Task("Задача 2", "Описание задачи 2", Status.DONE);
         task3 = new Task("Задача 3", "Описание задачи 3", Status.IN_PROGRESS);
@@ -33,32 +30,32 @@ public class InMemoryHistoryManagerTest{
 
     @Test
     public void shouldLastVersionTaskSaveInHistoryManager() {
-        manager.add(task1);
-        manager.add(task2);
-        manager.add(task3);
-        Assertions.assertNotNull(manager.getHistory());
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        Assertions.assertNotNull(historyManager.getHistory());
     }
 
     @Test
     public void linkLastTest() {
-        manager.add(task1);
-        manager.add(task2);
-        manager.add(task3);
-        Map<Integer, Node> history = manager.getHistoryMap();
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        Map<Integer, Node> history = historyManager.getHistoryMap();
         Assertions.assertNull(history.get(task3.getId()).next);
         Assertions.assertNotNull(history.get(task3.getId()).prev);
     }
 
     @Test
     public void removeNodeTest() {
-        manager.add(task1);
-        manager.add(task2);
-        manager.add(task3);
-        Map<Integer, Node> history = manager.getHistoryMap();
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        Map<Integer, Node> history = historyManager.getHistoryMap();
         Assertions.assertTrue(history.containsKey(task1.getId()));
         Assertions.assertTrue(history.containsKey(task2.getId()));
         Assertions.assertTrue(history.containsKey(task3.getId()));
-        manager.remove(task2.getId());
+        historyManager.remove(task2.getId());
         Assertions.assertFalse(history.containsKey(task2.getId()));
         Assertions.assertEquals(history.get(task1.getId()).next, history.get(task3.getId()));
         Assertions.assertEquals(history.get(task1.getId()).next, history.get(task3.getId()));
@@ -67,14 +64,59 @@ public class InMemoryHistoryManagerTest{
 
     @Test
     public void addTaskTest() {
-        manager.add(task1);
-        manager.add(task2);
-        manager.add(task3);
-        List<Task> history = manager.getHistory();
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        List<Task> history = historyManager.getHistory();
         Assertions.assertEquals(history.size(), 3);
         Assertions.assertEquals(task1, history.get(0));
         Assertions.assertEquals(task2, history.get(1));
         Assertions.assertEquals(task3, history.get(2));
     }
 
+    @Test
+    public void removeFromBegin() {
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        historyManager.remove(task1.getId());
+        Assertions.assertFalse(historyManager.getHistory().contains(task1));
+        List<Task> history = historyManager.getHistory();
+        Assertions.assertEquals(2, history.size());
+        Assertions.assertEquals(task2, history.get(0));
+        Assertions.assertEquals(task3, history.get(1));
+    }
+
+    @Test
+    public void removeFromMid() {
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        historyManager.remove(task2.getId());
+        Assertions.assertFalse(historyManager.getHistory().contains(task2));
+        List<Task> history = historyManager.getHistory();
+        Assertions.assertEquals(2, history.size());
+        Assertions.assertEquals(task1, history.get(0));
+        Assertions.assertEquals(task3, history.get(1));
+    }
+
+    @Test
+    public void removeFromEnd() {
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
+        historyManager.remove(task3.getId());
+        Assertions.assertFalse(historyManager.getHistory().contains(task3));
+        List<Task> history = historyManager.getHistory();
+        Assertions.assertEquals(2, history.size());
+        Assertions.assertEquals(task1, history.get(0));
+        Assertions.assertEquals(task2, history.get(1));
+    }
+
+    @Test
+    public void shouldHistoryHaveDublicate() {
+        historyManager.add(task1);
+        historyManager.add(task1);
+        Assertions.assertEquals(1, historyManager.getHistory().size());
+    }
 }

@@ -130,9 +130,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllTasks() {
         tasks.clear();
-        prioritizedTasks.stream()
-                .filter(task -> task.getClass() == Task.class)
-                .peek(task -> prioritizedTasks.remove(task));
     }
 
     @Override
@@ -149,8 +146,6 @@ public class InMemoryTaskManager implements TaskManager {
                     epic.updateEpicStatus();
                 });
         subtasks.clear();
-        prioritizedTasks.stream()
-                .forEach(task -> prioritizedTasks.remove(task));
     }
 
     @Override

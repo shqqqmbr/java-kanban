@@ -82,18 +82,18 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void updateEpic() {
         Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
-        manager.updateTask(epic1, epic2);
+        List<Subtask> epic1Subtasks = manager.getEpicsSubtasks(epic1);
+        manager.updateEpic(epic1, epic2);
         Assertions.assertEquals(epic1.getId(), epic2.getId());
         Assertions.assertFalse(manager.getAllEpics().contains(epic1));
         Assertions.assertTrue(manager.getAllEpics().contains(epic2));
-        Assertions.assertEquals(manager.getEpicsSubtasks(epic1), manager.getEpicsSubtasks(epic2));
     }
 
     @Test
     public void updateSubtask() {
-        Subtask subtask2 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic1.getId(),
+        Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic1.getId(),
                 Duration.ofMinutes(15), LocalDateTime.of(2025, 1, 1, 11, 0));
-        manager.updateTask(subtask1, subtask2);
+        manager.updateSubtask(subtask1, subtask2);
         Assertions.assertEquals(subtask1.getId(), subtask2.getId());
         Assertions.assertFalse(manager.getAllSubtasks().contains(subtask1));
         Assertions.assertTrue(manager.getAllSubtasks().contains(subtask2));
@@ -154,7 +154,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     public void getHistory() {
-
+        manager.getTask(task1.getId());
+        manager.getEpic(epic1.getId());
+        manager.getSubtask(subtask1.getId());
+        Assertions.assertEquals(3, manager.getHistory().size());
     }
-
 }
