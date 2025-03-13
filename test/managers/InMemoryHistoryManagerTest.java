@@ -10,12 +10,13 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryHistoryManagerTest {
+public class InMemoryHistoryManagerTest{
     InMemoryHistoryManager manager;
     TaskManager taskManager;
     protected Task task1;
     protected Task task2;
     protected Task task3;
+
 
     @BeforeEach
     public void beforeEach() {
@@ -75,4 +76,5 @@ public class InMemoryHistoryManagerTest {
         Assertions.assertEquals(task2, history.get(1));
         Assertions.assertEquals(task3, history.get(2));
     }
+
 }

@@ -93,4 +93,25 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         int subtask2ID = subtask.getEpicId();
         Assertions.assertEquals(subtaskId, subtask2ID);
     }
+    @Test
+    public void checkEpicStatus(){
+        Epic epic = new Epic("Эпик 1", "Описание эпика 1");
+        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic.getId());
+        manager.addEpic(epic);
+        manager.addSubtask(subtask1);
+        manager.addSubtask(subtask2);
+        Assertions.assertTrue(epic.getStatus()==Status.NEW);
+        subtask1.setStatus(Status.DONE);
+        subtask2.setStatus(Status.DONE);
+        epic.updateEpicStatus();
+        Assertions.assertTrue(epic.getStatus()==Status.DONE);
+        subtask1.setStatus(Status.NEW);
+        epic.updateEpicStatus();
+        Assertions.assertTrue(epic.getStatus()==Status.IN_PROGRESS);
+        subtask1.setStatus(Status.IN_PROGRESS);
+        subtask2.setStatus(Status.IN_PROGRESS);
+        epic.updateEpicStatus();
+        Assertions.assertTrue(epic.getStatus()==Status.IN_PROGRESS);
+    }
 }
