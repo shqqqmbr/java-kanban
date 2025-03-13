@@ -125,7 +125,7 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 1, 10, 0));
         Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW,
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 1, 10, 8));
-        boolean isIntersect = manager.isTasksIntersect(task1, task2);
+        boolean isIntersect = manager.isTasksOverlapping(task1, task2);
         Assertions.assertTrue(isIntersect);
     }
 }

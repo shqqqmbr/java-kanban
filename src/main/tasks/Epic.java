@@ -3,7 +3,6 @@ package main.tasks;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import main.constants.Status;
@@ -12,32 +11,32 @@ public class Epic extends Task {
 
     protected final ArrayList<Subtask> allSubtasks = new ArrayList<>();
     protected LocalDateTime endTime;
+    protected LocalDateTime startTime;
+    protected Duration duration;
 
     public Epic(String name, String description) {
-        super(name, description, Status.NEW);
+        super(name, description, Status.NEW, Duration.ZERO, null);
+        this.duration = Duration.ZERO;
+        this.startTime = getEpicStartTime();
     }
 
-    public Epic(String name, String description, Duration duration, LocalDateTime startTime) {
-        super(name, description, Status.NEW, duration, startTime);
-    }
-
-    public Duration getEpicDuration(){
+    public Duration getEpicDuration() {
         return allSubtasks.stream()
-                .filter(subtask -> subtask.getStartTime()!=null && subtask.getEndTime()!=null)
+                .filter(subtask -> subtask.getStartTime() != null && subtask.getEndTime() != null)
                 .map(subtask -> Duration.between(subtask.getStartTime(), subtask.getEndTime()))
                 .reduce(Duration.ZERO, Duration::plus);
 
     }
 
-    public LocalDateTime getEpicStartTime(){
+    public LocalDateTime getEpicStartTime() {
         return allSubtasks.stream()
-                .filter(subtask -> subtask.getStartTime()!=null && subtask.getEndTime()!=null)
+                .filter(subtask -> subtask.getStartTime() != null && subtask.getEndTime() != null)
                 .map(Subtask::getStartTime)
                 .min(Comparator.naturalOrder())
                 .orElse(null);
     }
 
-    public LocalDateTime getEndTime(){
+    public LocalDateTime getEpicEndTime() {
         return startTime.plus(duration);
     }
 
