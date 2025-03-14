@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
 
 import main.constants.Status;
 
@@ -14,8 +15,6 @@ public class Epic extends Task {
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW, Duration.ZERO, null);
-        this.duration = Duration.ZERO;
-        this.startTime = null;
         this.endTime = null;
     }
 
@@ -27,27 +26,32 @@ public class Epic extends Task {
             this.endTime = null;
             return;
         }
-        this.startTime = getEpicStartTime();
-        this.endTime = getEpicEndTime();
-        if (startTime != null && endTime != null) {
-            this.duration = Duration.between(startTime, endTime);
-        } else {
-            this.duration = Duration.ZERO;
-        }
+        this.startTime = getStartTime();
+        this.endTime = getEndTime();
+        this.duration = getDuration();
 
     }
 
+    public Duration getDuration() {
+        if (this.startTime != null && this.endTime != null) {
+            return Duration.between(this.startTime, this.endTime);
+        } else {
+            return Duration.ZERO;
+        }
+    }
 
-    public LocalDateTime getEpicStartTime() {
+    public LocalDateTime getStartTime() {
         return allSubtasks.stream()
+                .filter(Objects::nonNull)
                 .filter(subtask -> subtask.getStartTime() != null && subtask.getEndTime() != null)
                 .map(Subtask::getStartTime)
                 .min(Comparator.naturalOrder())
                 .orElse(null);
     }
 
-    public LocalDateTime getEpicEndTime() {
+    public LocalDateTime getEndTime() {
         return allSubtasks.stream()
+                .filter(Objects::nonNull)
                 .filter(subtask -> subtask.getEndTime() != null)
                 .map(Subtask::getEndTime)
                 .max(Comparator.naturalOrder())

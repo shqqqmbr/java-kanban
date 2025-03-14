@@ -26,6 +26,7 @@ public class Task {
         this.status = status;
         this.duration = duration;
         this.startTime = startTime;
+
     }
 
     public Duration getDuration() {
@@ -96,11 +97,15 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "{name='" + name + '\'' +
+        String out = this.getClass().getSimpleName() + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", id=" + id + ", duration=" + duration.toMinutes() +
-                ", startTime=" + startTime +
-                '}' + "\n";
+                ", startTime=" + startTime;
+        if (this.getClass() == Subtask.class) {
+            return out + ", epicId=" + ((Subtask) this).getEpicId() + '}' + "\n";
+        } else {
+            return out + '}' + "\n";
+        }
     }
 }
