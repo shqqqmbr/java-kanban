@@ -61,6 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void addEpic(Epic epic) {
         epic.setId(maxId++);
         epics.put(epic.getId(), epic);
+        epic.updateEpicTime();
     }
 
     @Override
@@ -76,6 +77,7 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException(subtask.getName() + " пересекается с другой задачей");
         }
         addToSetTasks(subtask);
+        epic.updateEpicTime();
     }
 
     @Override
@@ -99,6 +101,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.remove(subtaskId);
         epic.updateEpicStatus();
         manager.remove(subtaskId);
+        epic.updateEpicTime();
     }
 
     @Override
@@ -112,7 +115,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateEpic(Epic epic, Epic newEpic) {
         newEpic.setId(epic.getId());
         epics.put(epic.getId(), newEpic);
-        newEpic.updateEpicStatus();//исправлено
+        newEpic.updateEpicStatus();
+        newEpic.updateEpicTime();//исправлено
     }
 
     @Override
@@ -125,6 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.addSubtask(newSubtask);
         epic.updateEpicStatus();
         updateTaskFromSetTasks(subtask, newSubtask);
+        epic.updateEpicTime();
     }
 
     @Override

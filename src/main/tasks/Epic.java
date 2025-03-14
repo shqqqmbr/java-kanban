@@ -11,22 +11,32 @@ public class Epic extends Task {
 
     protected final ArrayList<Subtask> allSubtasks = new ArrayList<>();
     protected LocalDateTime endTime;
-    protected LocalDateTime startTime;
-    protected Duration duration;
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW, Duration.ZERO, null);
         this.duration = Duration.ZERO;
+        this.startTime = null;
+        this.endTime = null;
+    }
+
+
+    public void updateEpicTime() {
+        if (allSubtasks.isEmpty()) {
+            this.duration = Duration.ZERO;
+            this.startTime = null;
+            this.endTime = null;
+            return;
+        }
         this.startTime = getEpicStartTime();
+        this.endTime = getEpicEndTime();
+        if (startTime != null && endTime != null) {
+            this.duration = Duration.between(startTime, endTime);
+        } else {
+            this.duration = Duration.ZERO;
+        }
+
     }
 
-    public Duration getEpicDuration() {
-        return allSubtasks.stream()
-                .filter(subtask -> subtask.getStartTime() != null && subtask.getEndTime() != null)
-                .map(subtask -> Duration.between(subtask.getStartTime(), subtask.getEndTime()))
-                .reduce(Duration.ZERO, Duration::plus);
-
-    }
 
     public LocalDateTime getEpicStartTime() {
         return allSubtasks.stream()
@@ -37,7 +47,11 @@ public class Epic extends Task {
     }
 
     public LocalDateTime getEpicEndTime() {
-        return startTime.plus(duration);
+        return allSubtasks.stream()
+                .filter(subtask -> subtask.getEndTime() != null)
+                .map(Subtask::getEndTime)
+                .max(Comparator.naturalOrder())
+                .orElse(null);
     }
 
     public void addSubtask(Subtask subtask) {

@@ -99,7 +99,7 @@ public class Task {
         return this.getClass().getSimpleName() + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", id=" + id + ", duration=" + duration +
+                ", id=" + id + ", duration=" + duration.toMinutes() +
                 ", startTime=" + startTime +
                 '}' + "\n";
     }
