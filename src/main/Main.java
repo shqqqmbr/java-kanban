@@ -30,6 +30,10 @@ public class Main {
         fb.addSubtask(subtask1);
         fb.addSubtask(subtask2);
         System.out.println(epic1);
-        File newFile = FileBackedTaskManager.loadFromFile(file);
+        FileBackedTaskManager newFile = FileBackedTaskManager.loadFromFile(file);
+        Subtask subtask3 = new Subtask("Подзадача3", "Описание подзадачи3", Status.DONE, epic1.getId(),
+                Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10,10, 40));
+        newFile.addSubtask(subtask3);
+        System.out.println();
     }
 }
