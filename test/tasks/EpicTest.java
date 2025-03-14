@@ -8,6 +8,9 @@ import main.tasks.Subtask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 class EpicTest {
 
     TaskManager manager = Managers.getDefaultTaskManager();
@@ -23,8 +26,10 @@ class EpicTest {
     @Test
     public void checkEpicStatus() {
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
-        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
-        Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic.getId());
+        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId(),
+                Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10, 10, 0));
+        Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic.getId(),
+                Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10, 10, 20));
         manager.addEpic(epic);
         manager.addSubtask(subtask1);
         manager.addSubtask(subtask2);

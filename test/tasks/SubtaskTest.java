@@ -8,6 +8,9 @@ import main.tasks.Subtask;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 class SubtaskTest {
     TaskManager manager = Managers.getDefaultTaskManager();
 
@@ -23,7 +26,8 @@ class SubtaskTest {
     @Test
     public void shouldSubtaskHaveEpic() {
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
-        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId());
+        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId(),
+                Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10, 10, 0));
         manager.addEpic(epic);
         manager.addSubtask(subtask1);
         Assertions.assertTrue(manager.getAllEpics().contains(epic));
