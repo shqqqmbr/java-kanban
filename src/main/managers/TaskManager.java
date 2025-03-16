@@ -6,6 +6,7 @@ import main.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     public void addTask(Task task);
@@ -47,4 +48,6 @@ public interface TaskManager {
     public ArrayList<Subtask> getEpicsSubtasks(Epic epic);
 
     public List<? extends Task> getHistory();
+
+    public TreeSet<Task> getPrioritizedTasks();
 }

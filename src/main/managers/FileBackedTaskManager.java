@@ -8,6 +8,8 @@ import main.tasks.Subtask;
 import main.tasks.Task;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     File file;
@@ -145,16 +147,31 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() throws ManagerSaveException {
         try (Writer fileWriter = new FileWriter(file)) {
-            fileWriter.write("id,type,name,status,description,epic\n");
-            for (Task task : getAllTasks()) {
-                fileWriter.write(toString(task) + "\n");
-            }
-            for (Epic epic : getAllEpics()) {
-                fileWriter.write(toString(epic) + "\n");
-            }
-            for (Subtask subtask : getAllSubtasks()) {
-                fileWriter.write(toString(subtask) + "\n");
-            }
+            fileWriter.write("id,type,name,status,description,epic,duration,startTime\n");
+            getAllTasks().stream()
+                    .forEach(task -> {
+                        try {
+                            fileWriter.write(toString(task) + "\n");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e.getMessage());
+                        }
+                    });
+            getAllEpics().stream()
+                    .forEach(epic -> {
+                        try {
+                            fileWriter.write(toString(epic) + "\n");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e.getMessage());
+                        }
+                    });
+            getAllSubtasks().stream()
+                    .forEach(subtask -> {
+                        try {
+                            fileWriter.write(toString(subtask) + "\n");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e.getMessage());
+                        }
+                    });
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка записи в файл.");
         }
@@ -167,22 +184,31 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = splValue[2];
         Status status = Status.valueOf(splValue[3]);
         String description = splValue[4];
+        Duration duration;
+        LocalDateTime startTime;
         int epicId;
 
         switch (type) {
             case TASK:
-                Task task = new Task(name, description, status);
+                duration = Duration.parse(splValue[5]);
+                startTime = LocalDateTime.parse(splValue[6]);
+                Task task = new Task(name, description, status, duration, startTime);
                 task.setId(id);
                 tasks.put(task.getId(), task);
                 return task;
             case EPIC:
+                duration = Duration.parse(splValue[5]);
+                startTime = LocalDateTime.parse(splValue[6]);
                 Epic epic = new Epic(name, description);
                 epic.setId(id);
+                epic.updateEpicTime();
                 epics.put(epic.getId(), epic);
                 return epic;
             case SUBTASK:
                 epicId = Integer.parseInt(splValue[5]);
-                Subtask subtask = new Subtask(name, description, status, epicId);
+                duration = Duration.parse(splValue[6]);
+                startTime = LocalDateTime.parse(splValue[7]);
+                Subtask subtask = new Subtask(name, description, status, epicId, duration, startTime);
                 subtask.setId(id);
                 subtasks.put(subtask.getId(), subtask);
 
@@ -190,6 +216,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (parentEpic != null) {
                     parentEpic.addSubtask(subtask);
                 }
+                parentEpic.updateEpicTime();
                 return subtask;
             default:
                 throw new IllegalArgumentException("Неизвестный тип задачи: " + type);
@@ -199,12 +226,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String toString(Task task) {
         if (task instanceof Subtask) {
             Subtask subtask = (Subtask) task;
-            return String.format("%d,SUBTASK,%s,%s,%s,%d", subtask.getId(), subtask.getName(),
-                    subtask.getStatus(), subtask.getDescription(), subtask.getEpicId());
+            return String.format("%d,SUBTASK,%s,%s,%s,%d,%s,%s", subtask.getId(), subtask.getName(),
+                    subtask.getStatus(), subtask.getDescription(), subtask.getEpicId(),
+                    subtask.getDuration(), subtask.getStartTime());
         } else if (task instanceof Epic) {
-            return String.format("%d,EPIC,%s,%s,%s", task.getId(), task.getName(), task.getStatus(), task.getDescription());
+            return String.format("%d,EPIC,%s,%s,%s,%s,%s", task.getId(), task.getName(), task.getStatus(),
+                    task.getDescription(), task.getDuration(), task.getStartTime());
         } else if (task instanceof Task) {
-            return String.format("%d,TASK,%s,%s,%s", task.getId(), task.getName(), task.getStatus(), task.getDescription());
+            return String.format("%d,TASK,%s,%s,%s,%s,%s", task.getId(), task.getName(), task.getStatus(),
+                    task.getDescription(), task.getDuration(), task.getStartTime());
         } else {
             throw new IllegalArgumentException("Неизвестный тип задачи.");
         }

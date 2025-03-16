@@ -1,5 +1,7 @@
 package main.tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import main.constants.Status;
@@ -9,6 +11,8 @@ public class Task {
     protected String description;
     protected Status status;
     protected int id;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -16,6 +20,34 @@ public class Task {
         this.status = status;
     }
 
+    public Task(String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
+    }
 
     public String getDescription() {
         return description;
@@ -65,10 +97,15 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "{name='" + name + '\'' +
+        String out = this.getClass().getSimpleName() + "{name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", id=" + id +
-                '}' + "\n";
+                ", id=" + id + ", duration=" + duration.toMinutes() +
+                ", startTime=" + startTime;
+        if (this.getClass() == Subtask.class) {
+            return out + ", epicId=" + ((Subtask) this).getEpicId() + '}' + "\n";
+        } else {
+            return out + '}' + "\n";
+        }
     }
 }

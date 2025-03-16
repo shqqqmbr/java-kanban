@@ -8,11 +8,29 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
+    protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
     private int maxId = 0;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
 
     public InMemoryTaskManager() {
+    }
+
+    public boolean isTasksOverlapping(Task task1, Task task2) {
+        return !task1.getEndTime().isBefore(task2.getStartTime()) &&
+                !task1.getStartTime().isAfter(task2.getEndTime());
+    }
+
+    public void addToSetTasks(Task task) {
+        if (task.getStartTime() == null) {
+            return;
+        }
+        prioritizedTasks.add(task);
+    }
+
+    public void updateTaskFromSetTasks(Task task, Task newTask) {
+        prioritizedTasks.remove(task);
+        addToSetTasks(newTask);
     }
 
     public void setMaxId(int maxId) {
@@ -31,6 +49,12 @@ public class InMemoryTaskManager implements TaskManager {
     public void addTask(Task task) {
         task.setId(maxId++);
         tasks.put(task.getId(), task);
+        boolean isIntersect = prioritizedTasks.stream()
+                .anyMatch(task1 -> isTasksOverlapping(task, task1));
+        if (isIntersect) {
+            throw new IllegalArgumentException(task.getName() + " пересекается с другой задачей");
+        }
+        addToSetTasks(task);
     }
 
     @Override
@@ -46,6 +70,13 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtask(subtask);
         epic.updateEpicStatus();
+        boolean isIntersect = prioritizedTasks.stream()
+                .anyMatch(subtask1 -> isTasksOverlapping(subtask, subtask1));
+        if (isIntersect) {
+            throw new IllegalArgumentException(subtask.getName() + " пересекается с другой задачей");
+        }
+        addToSetTasks(subtask);
+        epic.updateEpicTime();
     }
 
     @Override
@@ -64,20 +95,24 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtask(int subtaskId) {
-        Epic epic = epics.get(subtaskId);
+        Epic epic = epics.get(subtasks.get(subtaskId).getEpicId());
         epic.getAllSubtasks().remove(subtasks.get(subtaskId));
         subtasks.remove(subtaskId);
         epic.updateEpicStatus();
         manager.remove(subtaskId);
+        epic.updateEpicTime();
     }
 
     @Override
     public void updateTask(Task task, Task newTask) {
+        newTask.setId(task.getId());
         tasks.put(task.getId(), newTask);
+        updateTaskFromSetTasks(task, newTask);
     }
 
     @Override
     public void updateEpic(Epic epic, Epic newEpic) {
+        newEpic.setId(epic.getId());
         epics.put(epic.getId(), newEpic);
         newEpic.updateEpicStatus();//исправлено
     }
@@ -91,6 +126,8 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getAllSubtasks().remove(subtask);
         epic.addSubtask(newSubtask);
         epic.updateEpicStatus();
+        updateTaskFromSetTasks(subtask, newSubtask);
+        epic.updateEpicTime();
     }
 
     @Override
@@ -106,10 +143,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllSubtasks() {
-        for (Epic epic : epics.values()) {
-            epic.getAllSubtasks().clear();
-            epic.updateEpicStatus();
-        }
+        epics.values().stream()
+                .forEach(epic -> {
+                    epic.getAllSubtasks().clear();
+                    epic.updateEpicStatus();
+                });
         subtasks.clear();
     }
 
@@ -156,4 +194,8 @@ public class InMemoryTaskManager implements TaskManager {
         return manager.getHistory();
     }
 
+    @Override
+    public TreeSet<Task> getPrioritizedTasks() {
+        return prioritizedTasks;
+    }
 }
