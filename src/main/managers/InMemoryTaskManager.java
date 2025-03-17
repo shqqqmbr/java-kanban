@@ -47,14 +47,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addTask(Task task) {
-        task.setId(maxId++);
-        tasks.put(task.getId(), task);
         boolean isIntersect = prioritizedTasks.stream()
                 .anyMatch(task1 -> isTasksOverlapping(task, task1));
         if (isIntersect) {
             throw new IllegalArgumentException(task.getName() + " пересекается с другой задачей");
         }
         addToSetTasks(task);
+        task.setId(maxId++);
+        tasks.put(task.getId(), task);
     }
 
     @Override
@@ -65,8 +65,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addSubtask(Subtask subtask) {
-        subtask.setId(maxId++);
-        subtasks.put(subtask.getId(), subtask);
         Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtask(subtask);
         epic.updateEpicStatus();
@@ -77,6 +75,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
         addToSetTasks(subtask);
         epic.updateEpicTime();
+        subtask.setId(maxId++);
+        subtasks.put(subtask.getId(), subtask);
     }
 
     @Override
