@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 
 public class HttpTaskServer {
-
+    private static final int PORT = 8080;
     public static void main(String[] args) throws ManagerSaveException, IOException {
         File file = File.createTempFile("practicum", ".csv");
         FileBackedTaskManager fb = new FileBackedTaskManager(file);
