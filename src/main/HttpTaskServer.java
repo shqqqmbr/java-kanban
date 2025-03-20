@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 
-public class Main {
+public class HttpTaskServer {
 
     public static void main(String[] args) throws ManagerSaveException, IOException {
         File file = File.createTempFile("practicum", ".csv");
