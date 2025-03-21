@@ -5,9 +5,13 @@ import com.sun.net.httpserver.HttpHandler;
 import main.exceptions.ManagerSaveException;
 import main.managers.Managers;
 import main.managers.TaskManager;
+import main.tasks.Task;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class TaskHandler extends BaseHttpHandler implements HttpHandler{
     public TaskHandler(TaskManager taskManager) {
@@ -22,19 +26,23 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler{
             switch (method){
                 case "GET":
                     if (pathPart.length==2 && pathPart[1]=="tasks"){
-                        taskManager.getAllTasks();
-                        sendText(httpExchange, "Задачи выведены успешно!", 200);
+                        String tasksJson = gson.toJson(taskManager.getAllTasks());
+                        sendText(httpExchange, tasksJson, 200);
                     }
                     if (pathPart.length==3 && pathPart[1]=="tasks"){
                         String id = pathPart[2];
-                        taskManager.getTask(Integer.valueOf(id));
-                        sendText(httpExchange,"Задача выведена успешно!",200);
+                        String taskJson = gson.toJson(taskManager.getTask(Integer.valueOf(id)));
+                        sendText(httpExchange,taskJson,200);
                     }else {
                         sendNotFound(httpExchange);
                     }
                 case "POST":
                     if (pathPart.length==2 && pathPart[1]=="tasks"){
-
+                        InputStreamReader reader = new InputStreamReader(httpExchange.getRequestBody(), StandardCharsets.UTF_8);
+                        Task task = gson.fromJson(reader, Task.class);
+                        if (task.getId()==0){
+                            taskManager.createTask(task);
+                        }
                     }
 
 
