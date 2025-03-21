@@ -1,7 +1,10 @@
 package main.managers;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
+import main.constants.Status;
 import main.tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -34,7 +37,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public void setMaxId(int maxId) {
-        this.maxId = maxId;
+        this.maxId = filesMaxId();
     }
 
     public int filesMaxId() {
@@ -80,9 +83,40 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public void createTask(Task task) {
+        task.setName("Task 1");
+        task.setDescription("Description 1");
+        task.setStatus(Status.NEW);
+        task.setDuration(Duration.ofMinutes(1));
+        task.setStartTime(LocalDateTime.of(2025, 1, 1, 0, 0));
+        task.setId(maxId++);
+    }
+
+    @Override
+    public void createSubtask(Subtask subtask) {
+        subtask.setName("Subtask 1");
+        subtask.setDescription("Description 1");
+        subtask.setStatus(Status.NEW);
+        subtask.setDuration(Duration.ofMinutes(1));
+        subtask.setStartTime(LocalDateTime.of(2025, 1, 1, 0, 0));
+        subtask.setId(maxId++);
+    }
+
+    @Override
+    public void createEpic(Epic epic) {
+        epic.setName("Epic 1");
+        epic.setDescription("Description 1");
+        epic.setStatus(Status.NEW);
+        epic.setDuration(epic.getDuration());
+        epic.setStartTime(epic.getStartTime());
+        epic.setId(maxId++);
+    }
+
+    @Override
     public void deleteTask(int taskId) {
         tasks.remove(taskId);
         manager.remove(taskId);
+        prioritizedTasks.remove(tasks.get(taskId));
     }
 
     @Override
@@ -101,6 +135,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.updateEpicStatus();
         manager.remove(subtaskId);
         epic.updateEpicTime();
+        prioritizedTasks.remove(subtasks.get(subtaskId));
     }
 
     @Override
