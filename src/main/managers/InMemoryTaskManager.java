@@ -1,10 +1,7 @@
 package main.managers;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
 
-import main.constants.Status;
 import main.tasks.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -12,7 +9,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
-    private int maxId = 0;
+    private int maxId = 1;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
 
@@ -80,36 +77,6 @@ public class InMemoryTaskManager implements TaskManager {
         epic.updateEpicTime();
         subtask.setId(maxId++);
         subtasks.put(subtask.getId(), subtask);
-    }
-
-    @Override
-    public void createTask(Task task) {
-        task.setName("Task 1");
-        task.setDescription("Description 1");
-        task.setStatus(Status.NEW);
-        task.setDuration(Duration.ofMinutes(1));
-        task.setStartTime(LocalDateTime.of(2025, 1, 1, 0, 0));
-        task.setId(maxId++);
-    }
-
-    @Override
-    public void createSubtask(Subtask subtask) {
-        subtask.setName("Subtask 1");
-        subtask.setDescription("Description 1");
-        subtask.setStatus(Status.NEW);
-        subtask.setDuration(Duration.ofMinutes(1));
-        subtask.setStartTime(LocalDateTime.of(2025, 1, 1, 0, 0));
-        subtask.setId(maxId++);
-    }
-
-    @Override
-    public void createEpic(Epic epic) {
-        epic.setName("Epic 1");
-        epic.setDescription("Description 1");
-        epic.setStatus(Status.NEW);
-        epic.setDuration(epic.getDuration());
-        epic.setStartTime(epic.getStartTime());
-        epic.setId(maxId++);
     }
 
     @Override

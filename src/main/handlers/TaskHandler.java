@@ -38,15 +38,19 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler{
                     }
                 case "POST":
                     if (pathPart.length==2 && pathPart[1]=="tasks"){
-                        InputStreamReader reader = new InputStreamReader(httpExchange.getRequestBody(), StandardCharsets.UTF_8);
-                        Task task = gson.fromJson(reader, Task.class);
+                        InputStream inputStream = httpExchange.getRequestBody();
+                        Task task = gson.fromJson(new InputStreamReader
+                                (inputStream, StandardCharsets.UTF_8), Task.class);
+
+//                        Task newTask = newAndOldTasks[0];
+//                        Task oldTask = newAndOldTasks[0];
                         if (task.getId()==0){
-                            taskManager.createTask(task);
+                            taskManager.addTask(task);
+                            sendText(httpExchange,"Задача успешно добавлена!",201);
                         }
+                    } else {
+                        otherExceptions(httpExchange);
                     }
-
-
-
                 case "DELETE":
                     if (pathPart.length==3 && pathPart[1]=="tasks"){
                         String id = pathPart[2];

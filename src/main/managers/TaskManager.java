@@ -15,12 +15,6 @@ public interface TaskManager {
 
     public void addSubtask(Subtask subtask);
 
-    public void createTask(Task task);
-
-    public void createSubtask(Subtask subtask);
-
-    public void createEpic(Epic epic);
-
     public void deleteTask(int taskId);
 
     public void deleteEpic(int epicId);
