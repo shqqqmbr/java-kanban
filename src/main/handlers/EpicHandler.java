@@ -54,13 +54,17 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
 
                 case "POST":
                     if (pathPart.length == 2 && pathPart[1].equals("epics")) {
-                        InputStream inputStream = httpExchange.getRequestBody();
+                        try {
+                            InputStream inputStream = httpExchange.getRequestBody();
+                            Epic epic = gson.fromJson(new InputStreamReader
+                                    (inputStream, StandardCharsets.UTF_8), Epic.class);
+                            inputStream.close();
+                            taskManager.addEpic(epic);
+                            sendText(httpExchange, "Эпик успешно добавлен!", 201);
+                        } catch (NullPointerException e){
+                            otherExceptions(httpExchange, e.getMessage());
+                        }
 
-                        Epic epic = gson.fromJson(new InputStreamReader
-                                (inputStream, StandardCharsets.UTF_8), Epic.class);
-                        inputStream.close();
-                        taskManager.addEpic(epic);
-                        sendText(httpExchange, "Эпик успешно добавлен!", 201);
                     } else {
                         otherExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
