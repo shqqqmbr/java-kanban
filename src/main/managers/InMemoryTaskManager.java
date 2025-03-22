@@ -81,9 +81,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTask(int taskId) {
+        Task task = tasks.get(taskId);
         tasks.remove(taskId);
         manager.remove(taskId);
-        prioritizedTasks.remove(tasks.get(taskId));
+        prioritizedTasks.remove(task);
     }
 
     @Override
