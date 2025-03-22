@@ -106,29 +106,27 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task, Task newTask) {
-        newTask.setId(task.getId());
-        tasks.put(task.getId(), newTask);
-        updateTaskFromSetTasks(task, newTask);
+    public void updateTask(Task newTask) {
+        Task oldTask = tasks.get(newTask.getId());
+        tasks.put(newTask.getId(), newTask);
+        updateTaskFromSetTasks(oldTask, newTask);
     }
 
     @Override
-    public void updateEpic(Epic epic, Epic newEpic) {
-        newEpic.setId(epic.getId());
-        epics.put(epic.getId(), newEpic);
+    public void updateEpic(Epic newEpic) {
+        epics.put(newEpic.getId(), newEpic);
         newEpic.updateEpicStatus();//исправлено
     }
 
     @Override
-    public void updateSubtask(Subtask subtask, Subtask newSubtask) {
-        newSubtask.setId(subtask.getId());
-        subtasks.remove(subtask.getEpicId());
+    public void updateSubtask(Subtask newSubtask) {
+        Subtask oldSubtask = subtasks.get(newSubtask.getId());
         subtasks.put(newSubtask.getId(), newSubtask);
         Epic epic = epics.get(newSubtask.getEpicId());
-        epic.getAllSubtasks().remove(subtask);
+        epic.getAllSubtasks().remove(oldSubtask);
         epic.addSubtask(newSubtask);
         epic.updateEpicStatus();
-        updateTaskFromSetTasks(subtask, newSubtask);
+        updateTaskFromSetTasks(oldSubtask, newSubtask);
         epic.updateEpicTime();
     }
 

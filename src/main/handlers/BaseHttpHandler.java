@@ -1,18 +1,26 @@
 package main.handlers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import main.managers.TaskManager;
+import main.typeAdapters.DurationAdapter;
+import main.typeAdapters.LocalDateTimeAdapter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public abstract class BaseHttpHandler {
     protected final TaskManager taskManager;
     protected final Gson gson;
     public BaseHttpHandler(TaskManager taskManager){
         this.taskManager = taskManager;
-        this.gson = new Gson();
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Duration.class, new DurationAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
     }
 
     protected void sendText(HttpExchange httpExchange, String text, int rCode) throws IOException {

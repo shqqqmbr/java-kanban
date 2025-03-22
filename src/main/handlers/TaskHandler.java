@@ -24,13 +24,13 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             String[] pathPart = path.split("/");
             switch (method) {
                 case "GET":
-                    if (path.equals("/tasks")) {
+                    if (pathPart.length == 2 && pathPart[1].equals("tasks")) {
                         String tasksJson = gson.toJson(taskManager.getAllTasks());
                         sendText(httpExchange, tasksJson, 200);
-                    }else if (path.equals("/tasks/%d")) {
+                        } else if (pathPart.length == 3) {
                         int id = Integer.parseInt(pathPart[2]);
                         Optional<Task> task = Optional.ofNullable(taskManager.getTask(id));
-                        if (task.isPresent()){
+                        if (task.isPresent()) {
                             String taskJson = gson.toJson(task.get());
                             sendText(httpExchange, taskJson, 200);
                         } else {
@@ -39,14 +39,15 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                     } else {
                         sendNotFound(httpExchange);
                     }
-                    httpExchange.close();
                     break;
 
                 case "POST":
-                    if (pathPart.equals("/tasks")){
+                    if (pathPart.length == 2 && pathPart[1].equals("tasks")) {
                         InputStream inputStream = httpExchange.getRequestBody();
+
                         Task task = gson.fromJson(new InputStreamReader
                                 (inputStream, StandardCharsets.UTF_8), Task.class);
+                        inputStream.close();
                         if (task.getId() == 0) {
                             try {
                                 taskManager.addTask(task);
@@ -54,26 +55,29 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                             } catch (IllegalArgumentException e) {
                                 sendHasInteractions(httpExchange);
                             }
-                        } else if (task.getId() > 0) {
-
+                        } else {
+                            try {
+                                taskManager.updateTask(task);
+                                sendText(httpExchange, "Задача успешно обновлена!", 201);
+                            } catch (IllegalArgumentException e) {
+                                sendHasInteractions(httpExchange);
+                            }
                         }
                     }
-                    httpExchange.close();
                     break;
 
                 case "DELETE":
-                    if (path.equals("/tasks/%d")) {
-                        String id = pathPart[2];
-                        taskManager.deleteTask(Integer.valueOf(id));
+                    if (pathPart.length == 3 && pathPart[1].equals("tasks")) {
+                        int id = Integer.parseInt(pathPart[2]);
+                        taskManager.deleteTask(id);
                         sendText(httpExchange, "Задача удалена успешно!", 200);
                     } else {
                         sendNotFound(httpExchange);
                     }
-                    httpExchange.close();
                     break;
             }
         } catch (Exception e) {
-            otherExceptions(httpExchange, "Общее исключение");
+            otherExceptions(httpExchange, e.getMessage());
         }
     }
 }
