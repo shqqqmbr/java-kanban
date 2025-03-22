@@ -37,7 +37,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                             sendNotFound(httpExchange);
                         }
                     } else {
-                        sendNotFound(httpExchange);
+                        otherExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
                     break;
 
@@ -63,6 +63,8 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                                 sendHasInteractions(httpExchange);
                             }
                         }
+                    } else {
+                        otherExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
                     break;
 
@@ -72,7 +74,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                         taskManager.deleteTask(id);
                         sendText(httpExchange, "Задача удалена успешно!", 200);
                     } else {
-                        sendNotFound(httpExchange);
+                        otherExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
                     break;
             }
