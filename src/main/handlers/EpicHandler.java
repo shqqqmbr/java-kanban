@@ -60,7 +60,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                                 (inputStream, StandardCharsets.UTF_8), Epic.class);
                         inputStream.close();
                         taskManager.addEpic(epic);
-                        sendText(httpExchange, "Задача успешно добавлена!", 201);
+                        sendText(httpExchange, "Эпик успешно добавлен!", 201);
                     } else {
                         otherExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
@@ -70,9 +70,9 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                     if (pathPart.length == 3 && pathPart[1].equals("epics")) {
                         int id = Integer.parseInt(pathPart[2]);
                         taskManager.deleteEpic(id);
-                        sendText(httpExchange, "Задача удалена успешно!", 200);
+                        sendText(httpExchange, "Эпик успешно удален!", 200);
                     } else {
-                        otherExceptions(httpExchange,"Ошибка при обработке запроса.");
+                        otherExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
                     break;
             }

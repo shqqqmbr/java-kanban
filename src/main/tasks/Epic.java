@@ -18,6 +18,11 @@ public class Epic extends Task {
         this.endTime = null;
     }
 
+    public Epic(int id, String name, String description) {
+        super(name, description, Status.NEW, Duration.ZERO, null);
+        this.id = id;
+        this.endTime = null;
+    }
 
     public void updateEpicTime() {
         if (allSubtasks.isEmpty()) {

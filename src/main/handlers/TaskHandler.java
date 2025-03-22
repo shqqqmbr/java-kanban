@@ -27,11 +27,11 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                     if (pathPart.length == 2 && pathPart[1].equals("tasks")) {
                         String tasksJson = gson.toJson(taskManager.getAllTasks());
                         sendText(httpExchange, tasksJson, 200);
-                    } else if (pathPart.length == 3) {
+                    } else if (pathPart.length == 3 && pathPart[1].equals("tasks")) {
                         int id = Integer.parseInt(pathPart[2]);
-                        Optional<Task> task = Optional.ofNullable(taskManager.getTask(id));
-                        if (task.isPresent()) {
-                            String taskJson = gson.toJson(task.get());
+                        Optional<Task> taskOpt = Optional.ofNullable(taskManager.getTask(id));
+                        if (taskOpt.isPresent()) {
+                            String taskJson = gson.toJson(taskOpt.get());
                             sendText(httpExchange, taskJson, 200);
                         } else {
                             sendNotFound(httpExchange);

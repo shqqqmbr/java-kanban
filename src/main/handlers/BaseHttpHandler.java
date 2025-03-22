@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public abstract class BaseHttpHandler {
     protected final TaskManager taskManager;
     protected final Gson gson;
-    public BaseHttpHandler(TaskManager taskManager){
+
+    public BaseHttpHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Duration.class, new DurationAdapter())
@@ -45,7 +46,7 @@ public abstract class BaseHttpHandler {
         httpExchange.close();
     }
 
-    protected void otherExceptions(HttpExchange httpExchange,String text) throws IOException{
+    protected void otherExceptions(HttpExchange httpExchange, String text) throws IOException {
         httpExchange.sendResponseHeaders(500, 0);
         httpExchange.getResponseBody().write(text.getBytes());
         httpExchange.close();
