@@ -29,15 +29,13 @@ public class Task {
 
     }
 
-    public Task(int id,String name, String description, Status status, Duration duration, LocalDateTime startTime) {
+    public Task(int id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
-        this.duration = duration;
-        this.startTime = startTime;
-
     }
+
 
     public Duration getDuration() {
         return duration;
