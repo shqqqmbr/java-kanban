@@ -2,6 +2,7 @@ package main.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import main.constants.Status;
 import main.managers.TaskManager;
 import main.tasks.Epic;
 import main.tasks.Task;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,12 +59,15 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                     if (pathPart.length == 2 && pathPart[1].equals("epics")) {
                         try {
                             InputStream inputStream = httpExchange.getRequestBody();
-                            Epic epic = gson.fromJson(new InputStreamReader
+                            Epic epicBody = gson.fromJson(new InputStreamReader
                                     (inputStream, StandardCharsets.UTF_8), Epic.class);
+                            String name = epicBody.getName();
+                            String description = epicBody.getDescription();
+                            Epic epic = new Epic(name, description);
                             inputStream.close();
                             taskManager.addEpic(epic);
                             sendText(httpExchange, "Эпик успешно добавлен!", 201);
-                        } catch (NullPointerException e){
+                        } catch (NullPointerException e) {
                             otherExceptions(httpExchange, e.getMessage());
                         }
 
