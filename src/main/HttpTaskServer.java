@@ -2,10 +2,7 @@ package main;
 
 
 import com.sun.net.httpserver.HttpServer;
-import main.constants.Status;
-import main.handlers.EpicHandler;
-import main.handlers.SubtaskHandler;
-import main.handlers.TaskHandler;
+import main.handlers.*;
 import main.managers.Managers;
 import main.managers.TaskManager;
 
@@ -22,8 +19,8 @@ public class HttpTaskServer {
         httpServer.createContext("/tasks", new TaskHandler(tm));
         httpServer.createContext("/subtasks", new SubtaskHandler(tm));
         httpServer.createContext("/epics", new EpicHandler(tm));
-//        httpServer.createContext("/tasks", new );
-//        httpServer.createContext("/tasks", new )
+        httpServer.createContext("/history", new HistoryHandler(tm));
+        httpServer.createContext("/prioritized", new PrioritizedHandler(tm));
         httpServer.start();
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
     }
