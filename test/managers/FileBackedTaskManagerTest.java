@@ -5,6 +5,7 @@ import main.exceptions.ManagerSaveException;
 import main.managers.FileBackedTaskManager;
 import main.tasks.Task;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -14,9 +15,14 @@ import java.time.LocalDateTime;
 
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
-    File file = File.createTempFile("tests", ".csv");
+    File file;
 
-    public FileBackedTaskManagerTest() throws IOException {
+    public FileBackedTaskManagerTest() {
+    }
+
+    @BeforeEach
+    public void beforeEach() throws IOException {
+         file = File.createTempFile("tests", ".csv");
     }
 
     @Override
@@ -40,7 +46,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         Task task = new Task("Задача 1", "Описание задачи 1", Status.NEW,
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10, 10, 0));
         Task task1 = new Task("Задача 2", "Описание задачи 2", Status.NEW,
-                Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10, 10, 20));
+                Duration.ofMinutes(10), LocalDateTime.of(2020, 1, 10, 10, 20));
         manager = new FileBackedTaskManager(file);
         manager.addTask(task);
         manager.addTask(task1);
@@ -48,6 +54,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         FileBackedTaskManager secManager = FileBackedTaskManager.loadFromFile(file);
         secManager.addTask(task);
         secManager.addTask(task1);
-        Assertions.assertEquals(4, secManager.getAllTasks().size());
+        Assertions.assertEquals(3, secManager.getAllTasks().size());
     }
 }

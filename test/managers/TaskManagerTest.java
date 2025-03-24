@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +23,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     protected abstract T createTaskManager();
 
     @BeforeEach
-    public void beforeEach() {
+    public void beforeEach() throws IOException {
         manager = createTaskManager();
         epic1 = new Epic("Эпик 1", "Описание эпика 1");
         task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW,
@@ -73,7 +74,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void updateTask() {
         Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW,
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 1, 10, 40));
-        manager.updateTask(task1, task2);
+        manager.updateTask(task2);
         Assertions.assertEquals(task1.getId(), task2.getId());
         Assertions.assertFalse(manager.getAllTasks().contains(task1));
         Assertions.assertTrue(manager.getAllTasks().contains(task2));
@@ -83,7 +84,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void updateEpic() {
         Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
         List<Subtask> epic1Subtasks = manager.getEpicsSubtasks(epic1);
-        manager.updateEpic(epic1, epic2);
+        manager.updateEpic(epic2);
         Assertions.assertEquals(epic1.getId(), epic2.getId());
         Assertions.assertFalse(manager.getAllEpics().contains(epic1));
         Assertions.assertTrue(manager.getAllEpics().contains(epic2));
@@ -93,7 +94,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void updateSubtask() {
         Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic1.getId(),
                 Duration.ofMinutes(15), LocalDateTime.of(2025, 1, 1, 11, 0));
-        manager.updateSubtask(subtask1, subtask2);
+        manager.updateSubtask(subtask2);
         Assertions.assertEquals(subtask1.getId(), subtask2.getId());
         Assertions.assertFalse(manager.getAllSubtasks().contains(subtask1));
         Assertions.assertTrue(manager.getAllSubtasks().contains(subtask2));

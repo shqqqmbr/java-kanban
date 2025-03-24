@@ -9,7 +9,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
-    private int maxId = 1;
+    private int maxId;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
 
@@ -28,8 +28,8 @@ public class InMemoryTaskManager implements TaskManager {
         prioritizedTasks.add(task);
     }
 
-    public void updateTaskFromSetTasks(Task task, Task newTask) {
-        prioritizedTasks.remove(task);
+    public void updateTaskFromSetTasks(Task oldTask, Task newTask) {
+        prioritizedTasks.remove(oldTask);
         addToSetTasks(newTask);
     }
 
@@ -74,9 +74,9 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException(subtask.getName() + " пересекается с другой задачей");
         }
         addToSetTasks(subtask);
-        epic.updateEpicTime();
         subtask.setId(maxId++);
         subtasks.put(subtask.getId(), subtask);
+        epic.updateEpicTime();
     }
 
     @Override
@@ -108,28 +108,37 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task newTask) {
-        Task oldTask = tasks.get(newTask.getId());
-        tasks.put(newTask.getId(), newTask);
-        updateTaskFromSetTasks(oldTask, newTask);
+    public void updateTask(Task task) throws IllegalStateException { //имея одинаковый id старая задача заменится новой
+        if (tasks.containsKey(task.getId())) {
+            tasks.put(task.getId(), task);
+            addToSetTasks(task);
+        } else {
+            throw new IllegalArgumentException("Задача составлена некорректно");
+        }
     }
 
     @Override
-    public void updateEpic(Epic newEpic) {
-        epics.put(newEpic.getId(), newEpic);
-        newEpic.updateEpicStatus();//исправлено
+    public void updateSubtask(Subtask subtask) throws IllegalStateException {
+        if (subtasks.containsKey(subtask.getId()) && epics.containsKey(subtask.getEpicId())) {
+            subtasks.put(subtask.getId(), subtask);//в эпике ничего перезаписывать не надо, тк id не изменился
+            addToSetTasks(subtask);
+            Epic epic = epics.get(subtask.getEpicId());
+            epic.updateEpicStatus();
+            epic.updateEpicTime();
+        } else {
+            throw new IllegalArgumentException("Задача составлена некорректно");
+        }
     }
 
     @Override
-    public void updateSubtask(Subtask newSubtask) {
-        Subtask oldSubtask = subtasks.get(newSubtask.getId());
-        subtasks.put(newSubtask.getId(), newSubtask);
-        Epic epic = epics.get(newSubtask.getEpicId());
-        epic.getAllSubtasks().remove(oldSubtask);
-        epic.addSubtask(newSubtask);
-        epic.updateEpicStatus();
-        updateTaskFromSetTasks(oldSubtask, newSubtask);
-        epic.updateEpicTime();
+    public void updateEpic(Epic newEpic) throws IllegalStateException {
+        if (epics.containsKey(newEpic.getId())) {
+            Epic epic = epics.get(newEpic.getId());
+            epic.setName(newEpic.getName());
+            epic.setDescription(newEpic.getDescription());
+        } else {
+            throw new IllegalArgumentException("Задача составлена некорректно");
+        }
     }
 
     @Override
