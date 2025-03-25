@@ -89,4 +89,8 @@ public class Epic extends Task {
             setStatus(Status.IN_PROGRESS);
         }
     }
+
+    public void deleteFromEpicSubtasks(Subtask subtask){
+        allSubtasks.remove(subtask);
+    }
 }

@@ -15,14 +15,9 @@ import java.time.LocalDateTime;
 
 
 public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
-    File file;
+    File file = File.createTempFile("tests", ".csv");
 
-    public FileBackedTaskManagerTest() {
-    }
-
-    @BeforeEach
-    public void beforeEach() throws IOException {
-         file = File.createTempFile("tests", ".csv");
+    public FileBackedTaskManagerTest() throws IOException {
     }
 
     @Override
@@ -54,6 +49,6 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
         FileBackedTaskManager secManager = FileBackedTaskManager.loadFromFile(file);
         secManager.addTask(task);
         secManager.addTask(task1);
-        Assertions.assertEquals(3, secManager.getAllTasks().size());
+        Assertions.assertEquals(4, secManager.getAllTasks().size());
     }
 }
