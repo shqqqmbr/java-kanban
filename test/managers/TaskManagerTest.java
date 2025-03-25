@@ -83,7 +83,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     public void updateEpic() {
         Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
-        List<Subtask> epic1Subtasks = manager.getEpicsSubtasks(epic1);
         manager.updateEpic(epic2);
         Assertions.assertEquals(epic1.getId(), epic2.getId());
         Assertions.assertFalse(manager.getAllEpics().contains(epic1));

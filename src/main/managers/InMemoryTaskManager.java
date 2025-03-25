@@ -109,36 +109,15 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) throws IllegalStateException { //имея одинаковый id старая задача заменится новой
-        if (tasks.containsKey(task.getId())) {
-            tasks.put(task.getId(), task);
-            addToSetTasks(task);
-        } else {
-            throw new IllegalArgumentException("Задача составлена некорректно");
-        }
     }
 
     @Override
     public void updateSubtask(Subtask subtask) throws IllegalStateException {
-        if (subtasks.containsKey(subtask.getId()) && epics.containsKey(subtask.getEpicId())) {
-            subtasks.put(subtask.getId(), subtask);//в эпике ничего перезаписывать не надо, тк id не изменился
-            addToSetTasks(subtask);
-            Epic epic = epics.get(subtask.getEpicId());
-            epic.updateEpicStatus();
-            epic.updateEpicTime();
-        } else {
-            throw new IllegalArgumentException("Задача составлена некорректно");
-        }
+
     }
 
     @Override
     public void updateEpic(Epic newEpic) throws IllegalStateException {
-        if (epics.containsKey(newEpic.getId())) {
-            Epic epic = epics.get(newEpic.getId());
-            epic.setName(newEpic.getName());
-            epic.setDescription(newEpic.getDescription());
-        } else {
-            throw new IllegalArgumentException("Задача составлена некорректно");
-        }
     }
 
     @Override
