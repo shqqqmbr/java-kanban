@@ -26,12 +26,13 @@ class EpicTest {
     @Test
     public void checkEpicStatus() {
         Epic epic = new Epic("Эпик 1", "Описание эпика 1");
+        manager.addEpic(epic);
         Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic.getId(),
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10, 10, 0));
+        manager.addSubtask(subtask1);
+
         Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic.getId(),
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 10, 10, 20));
-        manager.addEpic(epic);
-        manager.addSubtask(subtask1);
         manager.addSubtask(subtask2);
         Assertions.assertTrue(epic.getStatus() == Status.NEW);
         subtask1.setStatus(Status.DONE);

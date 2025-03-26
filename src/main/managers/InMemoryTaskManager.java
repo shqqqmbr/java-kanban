@@ -76,9 +76,9 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalArgumentException(subtask.getName() + " пересекается с другой задачей");
         }
         subtask.setId(addId());
+        Epic epic = epics.get(subtask.getEpicId());
         subtasks.put(subtask.getId(), subtask);
         addToSetTasks(subtask);
-        Epic epic = epics.get(subtask.getEpicId());
         epic.addSubtask(subtask);
         epic.updateEpicStatus();
         epic.updateEpicTime();
