@@ -35,7 +35,4 @@ public class HttpTaskServer {
         httpServer.createContext("/prioritized", new PrioritizedHandler(tm));
         httpServer.start();
     }
-    public void stop(){
-        httpServer.stop(0);
-    }
 }
