@@ -10,7 +10,7 @@ import java.time.Duration;
 public class DurationAdapter extends TypeAdapter<Duration> {
     @Override
     public void write(final JsonWriter jsonWriter, final Duration duration) throws IOException {
-        if (duration==null){
+        if (duration == null) {
             jsonWriter.nullValue();
         } else {
             jsonWriter.value(duration.toMinutes());
@@ -18,7 +18,7 @@ public class DurationAdapter extends TypeAdapter<Duration> {
     }
 
     @Override
-    public Duration read(final JsonReader jsonReader) throws IOException{
+    public Duration read(final JsonReader jsonReader) throws IOException {
         String duration = jsonReader.nextString();
         return Duration.parse(duration);
     }
