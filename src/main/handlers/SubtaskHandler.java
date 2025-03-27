@@ -42,8 +42,8 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
             case "POST":
                 if (pathPart.length == 2 && pathPart[1].equals("subtasks")) {
                     InputStream inputStream = httpExchange.getRequestBody();
-                    Subtask subtask = gson.fromJson(new InputStreamReader
-                            (inputStream, StandardCharsets.UTF_8), Subtask.class);
+                    Subtask subtask = gson.fromJson(new InputStreamReader(
+                            inputStream, StandardCharsets.UTF_8), Subtask.class);
                     inputStream.close();
                     if (subtask.getId() == 0) {
                         try {

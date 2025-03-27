@@ -45,8 +45,8 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                     if (pathPart.length == 2 && pathPart[1].equals("tasks")) {
                         InputStream inputStream = httpExchange.getRequestBody();
 
-                        Task task = gson.fromJson(new InputStreamReader
-                                (inputStream, StandardCharsets.UTF_8), Task.class);
+                        Task task = gson.fromJson(new InputStreamReader(
+                                inputStream, StandardCharsets.UTF_8), Task.class);
                         inputStream.close();
                         if (task.getId() == 0) {
                             try {
