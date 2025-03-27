@@ -54,8 +54,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                     if (pathPart.length == 2 && pathPart[1].equals("epics")) {
                         try {
                             InputStream inputStream = httpExchange.getRequestBody();
-                            Epic epicBody = gson.fromJson(new InputStreamReader
-                                    (inputStream, StandardCharsets.UTF_8), Epic.class);
+                            Epic epicBody = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8), Epic.class);
                             String name = epicBody.getName();
                             String description = epicBody.getDescription();
                             Epic epic = new Epic(name, description);
