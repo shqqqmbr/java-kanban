@@ -90,7 +90,7 @@ public class Epic extends Task {
         }
     }
 
-    public void deleteFromEpicSubtasks(Subtask subtask){
+    public void deleteFromEpicSubtasks(Subtask subtask) {
         allSubtasks.remove(subtask);
     }
 }

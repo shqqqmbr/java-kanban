@@ -21,7 +21,7 @@ public class InMemoryTaskManager implements TaskManager {
                 !task1.getStartTime().isAfter(task2.getEndTime());
     }
 
-    public int addId(){
+    public int addId() {
         maxId++;
         return maxId;
     }
