@@ -46,7 +46,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                             sendNotFound(httpExchange);
                         }
                     } else {
-                        otherExceptions(httpExchange, "Ошибка при обработке запроса.");
+                        sendExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
                     break;
 
@@ -63,11 +63,11 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                             taskManager.addEpic(epic);
                             sendText(httpExchange, "Эпик успешно добавлен!", 201);
                         } catch (NullPointerException e) {
-                            otherExceptions(httpExchange, e.getMessage());
+                            sendExceptions(httpExchange, e.getMessage());
                         }
 
                     } else {
-                        otherExceptions(httpExchange, "Ошибка при обработке запроса.");
+                        sendExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
                     break;
 
@@ -77,12 +77,12 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                         taskManager.deleteEpic(id);
                         sendText(httpExchange, "Эпик успешно удален!", 200);
                     } else {
-                        otherExceptions(httpExchange, "Ошибка при обработке запроса.");
+                        sendExceptions(httpExchange, "Ошибка при обработке запроса.");
                     }
                     break;
             }
         } catch (Exception e) {
-            otherExceptions(httpExchange, e.getMessage());
+            sendExceptions(httpExchange, e.getMessage());
         }
     }
 }

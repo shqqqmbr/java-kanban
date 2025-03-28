@@ -22,11 +22,11 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
                     String prioritTasks = gson.toJson(taskManager.getPrioritizedTasks());
                     sendText(httpExchange, prioritTasks, 200);
                 } else {
-                    otherExceptions(httpExchange, "Некорректный путь.");
+                    sendExceptions(httpExchange, "Некорректный путь.");
                 }
                 break;
             default:
-                otherExceptions(httpExchange, "Некорректный метод запроса.");
+                sendExceptions(httpExchange, "Некорректный метод запроса.");
                 break;
         }
     }

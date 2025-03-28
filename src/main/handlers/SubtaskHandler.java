@@ -36,7 +36,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                         sendNotFound(httpExchange);
                     }
                 } else {
-                    otherExceptions(httpExchange, "Ошибка при обработке запроса.");
+                    sendExceptions(httpExchange, "Ошибка при обработке запроса.");
                 }
                 break;
             case "POST":
@@ -61,7 +61,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                         }
                     }
                 } else {
-                    otherExceptions(httpExchange, "Ошибка при обработке запроса.");
+                    sendExceptions(httpExchange, "Ошибка при обработке запроса.");
                 }
                 break;
             case "DELETE":
@@ -70,7 +70,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                     taskManager.deleteSubtask(id);
                     sendText(httpExchange, "Подзадача успешно удалена!", 200);
                 } else {
-                    otherExceptions(httpExchange, "Произошла ошибка при обработке запроса.");
+                    sendExceptions(httpExchange, "Произошла ошибка при обработке запроса.");
                 }
                 break;
         }

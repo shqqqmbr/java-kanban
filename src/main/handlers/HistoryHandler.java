@@ -22,11 +22,11 @@ public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
                     String historyJson = gson.toJson(taskManager.getHistory());
                     sendText(httpExchange, historyJson, 200);
                 } else {
-                    otherExceptions(httpExchange, "Некорректный путь.");
+                    sendExceptions(httpExchange, "Некорректный путь.");
                 }
                 break;
             default:
-                otherExceptions(httpExchange, "Некорректный метод запроса.");
+                sendExceptions(httpExchange, "Некорректный метод запроса.");
                 break;
         }
     }

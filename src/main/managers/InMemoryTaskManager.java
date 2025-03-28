@@ -21,11 +21,6 @@ public class InMemoryTaskManager implements TaskManager {
                 !task1.getStartTime().isAfter(task2.getEndTime());
     }
 
-    public int addId() {
-        maxId++;
-        return maxId;
-    }
-
     public void addToSetTasks(Task task) {
         if (task.getStartTime() == null) {
             return;
@@ -205,5 +200,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
         return prioritizedTasks;
+    }
+
+    private int addId() {
+        maxId++;
+        return maxId;
     }
 }

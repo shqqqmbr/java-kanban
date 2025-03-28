@@ -46,7 +46,7 @@ public abstract class BaseHttpHandler {
         httpExchange.close();
     }
 
-    protected void otherExceptions(HttpExchange httpExchange, String text) throws IOException {
+    protected void sendExceptions(HttpExchange httpExchange, String text) throws IOException {
         httpExchange.sendResponseHeaders(500, 0);
         httpExchange.getResponseBody().write(text.getBytes());
         httpExchange.close();
