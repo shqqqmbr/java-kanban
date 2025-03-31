@@ -86,8 +86,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(Task task, Task newTask) {
-        super.updateTask(task, newTask);
+    public void updateTask(Task task) {
+        super.updateTask(task);
         try {
             save();
         } catch (ManagerSaveException e) {
@@ -96,8 +96,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateEpic(Epic epic, Epic newEpic) {
-        super.updateEpic(epic, newEpic);
+    public void updateEpic(Epic epic) {
+        super.updateEpic(epic);
         try {
             save();
         } catch (ManagerSaveException e) {
@@ -106,8 +106,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask subtask, Subtask newSubtask) {
-        super.updateSubtask(subtask, newSubtask);
+    public void updateSubtask(Subtask subtask) {
+        super.updateSubtask(subtask);
         try {
             save();
         } catch (ManagerSaveException e) {
@@ -246,7 +246,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             while (br.ready()) {
                 fromString(br.readLine());
             }
-            setMaxId(filesMaxId() + 1);
+            setMaxId(filesMaxId());
         } catch (FileNotFoundException e) {
             throw new ManagerSaveException("Файл не найден.");
         } catch (IOException e) {

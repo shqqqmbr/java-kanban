@@ -9,7 +9,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
-    private int maxId = 0;
+    protected int maxId = 0;
 
     HistoryManager manager = Managers.getDefaultHistoryManager();
 
@@ -28,8 +28,8 @@ public class InMemoryTaskManager implements TaskManager {
         prioritizedTasks.add(task);
     }
 
-    public void updateTaskFromSetTasks(Task task, Task newTask) {
-        prioritizedTasks.remove(task);
+    public void updateTaskFromSetTasks(Task oldTask, Task newTask) {
+        prioritizedTasks.remove(oldTask);
         addToSetTasks(newTask);
     }
 
@@ -52,37 +52,39 @@ public class InMemoryTaskManager implements TaskManager {
         if (isIntersect) {
             throw new IllegalArgumentException(task.getName() + " пересекается с другой задачей");
         }
-        addToSetTasks(task);
-        task.setId(maxId++);
+        task.setId(addId());
         tasks.put(task.getId(), task);
+        addToSetTasks(task);
     }
 
     @Override
     public void addEpic(Epic epic) {
-        epic.setId(maxId++);
+        epic.setId(addId());
         epics.put(epic.getId(), epic);
     }
 
     @Override
     public void addSubtask(Subtask subtask) {
-        Epic epic = epics.get(subtask.getEpicId());
-        epic.addSubtask(subtask);
-        epic.updateEpicStatus();
         boolean isIntersect = prioritizedTasks.stream()
                 .anyMatch(subtask1 -> isTasksOverlapping(subtask, subtask1));
         if (isIntersect) {
             throw new IllegalArgumentException(subtask.getName() + " пересекается с другой задачей");
         }
-        addToSetTasks(subtask);
-        epic.updateEpicTime();
-        subtask.setId(maxId++);
+        subtask.setId(addId());
+        Epic epic = epics.get(subtask.getEpicId());
         subtasks.put(subtask.getId(), subtask);
+        addToSetTasks(subtask);
+        epic.addSubtask(subtask);
+        epic.updateEpicStatus();
+        epic.updateEpicTime();
     }
 
     @Override
     public void deleteTask(int taskId) {
+        Task task = tasks.get(taskId);
         tasks.remove(taskId);
         manager.remove(taskId);
+        prioritizedTasks.remove(task);
     }
 
     @Override
@@ -95,39 +97,40 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtask(int subtaskId) {
+        Subtask subtask = subtasks.get(subtaskId);
         Epic epic = epics.get(subtasks.get(subtaskId).getEpicId());
         epic.getAllSubtasks().remove(subtasks.get(subtaskId));
         subtasks.remove(subtaskId);
         epic.updateEpicStatus();
         manager.remove(subtaskId);
         epic.updateEpicTime();
+        prioritizedTasks.remove(subtask);
     }
 
     @Override
-    public void updateTask(Task task, Task newTask) {
-        newTask.setId(task.getId());
-        tasks.put(task.getId(), newTask);
-        updateTaskFromSetTasks(task, newTask);
+    public void updateTask(Task task) throws IllegalStateException { //имея одинаковый id старая задача заменится новой
+        Task oldTask = tasks.get(task.getId());
+        tasks.remove(oldTask);
+        tasks.put(task.getId(), task);
+        updateTaskFromSetTasks(oldTask, task);
     }
 
     @Override
-    public void updateEpic(Epic epic, Epic newEpic) {
-        newEpic.setId(epic.getId());
-        epics.put(epic.getId(), newEpic);
-        newEpic.updateEpicStatus();//исправлено
+    public void updateSubtask(Subtask subtask) throws IllegalStateException {
+        Subtask oldSubtask = subtasks.get(subtask.getId());
+        Epic epic = epics.get(subtask.getEpicId());
+        epic.deleteFromEpicSubtasks(oldSubtask);
+        epic.addSubtask(subtask);
+        subtasks.remove(oldSubtask);
+        subtasks.put(subtask.getId(), subtask);
+        updateTaskFromSetTasks(oldSubtask, subtask);
     }
 
     @Override
-    public void updateSubtask(Subtask subtask, Subtask newSubtask) {
-        newSubtask.setId(subtask.getId());
-        subtasks.remove(subtask.getEpicId());
-        subtasks.put(newSubtask.getId(), newSubtask);
-        Epic epic = epics.get(newSubtask.getEpicId());
-        epic.getAllSubtasks().remove(subtask);
-        epic.addSubtask(newSubtask);
-        epic.updateEpicStatus();
-        updateTaskFromSetTasks(subtask, newSubtask);
-        epic.updateEpicTime();
+    public void updateEpic(Epic epic) throws IllegalStateException {
+        Epic oldEpic = epics.get(epic.getId());
+        epics.remove(oldEpic);
+        epics.put(epic.getId(), epic);
     }
 
     @Override
@@ -197,5 +200,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
         return prioritizedTasks;
+    }
+
+    private int addId() {
+        maxId++;
+        return maxId;
     }
 }

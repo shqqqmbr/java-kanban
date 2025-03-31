@@ -21,11 +21,11 @@ public interface TaskManager {
 
     public void deleteSubtask(int subtaskId);
 
-    public void updateTask(Task task, Task newTask);
+    public void updateTask(Task task);
 
-    public void updateEpic(Epic epic, Epic newEpic);
+    public void updateEpic(Epic epic);
 
-    public void updateSubtask(Subtask subtask, Subtask newSubtask);
+    public void updateSubtask(Subtask subtask);
 
     public void deleteAllTasks();
 

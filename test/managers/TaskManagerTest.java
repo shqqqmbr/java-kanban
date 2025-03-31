@@ -25,12 +25,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void beforeEach() {
         manager = createTaskManager();
         epic1 = new Epic("Эпик 1", "Описание эпика 1");
+        manager.addEpic(epic1);
         task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW,
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 1, 10, 0));
+        manager.addTask(task1);
         subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic1.getId(),
                 Duration.ofMinutes(15), LocalDateTime.of(2025, 1, 1, 10, 20));
-        manager.addEpic(epic1);
-        manager.addTask(task1);
         manager.addSubtask(subtask1);
     }
 
@@ -73,7 +73,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void updateTask() {
         Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW,
                 Duration.ofMinutes(10), LocalDateTime.of(2025, 1, 1, 10, 40));
-        manager.updateTask(task1, task2);
+        task2.setId(task1.getId());
+        manager.updateTask(task2);
         Assertions.assertEquals(task1.getId(), task2.getId());
         Assertions.assertFalse(manager.getAllTasks().contains(task1));
         Assertions.assertTrue(manager.getAllTasks().contains(task2));
@@ -83,7 +84,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void updateEpic() {
         Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
         List<Subtask> epic1Subtasks = manager.getEpicsSubtasks(epic1);
-        manager.updateEpic(epic1, epic2);
+        epic2.setId(epic1.getId());
+        manager.updateEpic(epic2);
         Assertions.assertEquals(epic1.getId(), epic2.getId());
         Assertions.assertFalse(manager.getAllEpics().contains(epic1));
         Assertions.assertTrue(manager.getAllEpics().contains(epic2));
@@ -93,7 +95,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void updateSubtask() {
         Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic1.getId(),
                 Duration.ofMinutes(15), LocalDateTime.of(2025, 1, 1, 11, 0));
-        manager.updateSubtask(subtask1, subtask2);
+        subtask2.setId(subtask1.getId());
+        manager.updateSubtask(subtask2);
         Assertions.assertEquals(subtask1.getId(), subtask2.getId());
         Assertions.assertFalse(manager.getAllSubtasks().contains(subtask1));
         Assertions.assertTrue(manager.getAllSubtasks().contains(subtask2));
